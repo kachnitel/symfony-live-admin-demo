@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ entityShortClass }} - Admin{% endblock %}
+
+{% block body %}
+    <h1>{{ entityShortClass }}</h1>
+
+    <twig:K:Admin:EntityList
+        entityClass="{{ entityClass }}"
+        entityShortClass="{{ entityShortClass }}"
+    />
+{% endblock %}

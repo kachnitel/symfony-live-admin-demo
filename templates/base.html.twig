@@ -2,9 +2,53 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <title>{% block title %}Admin Demo{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {% block stylesheets %}
+            <style>
+                body {
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background: #f5f5f5;
+                }
+                .container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                nav {
+                    background: #333;
+                    color: white;
+                    padding: 1rem 0;
+                    margin-bottom: 2rem;
+                }
+                nav .nav-container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 0 20px;
+                    display: flex;
+                    gap: 2rem;
+                    align-items: center;
+                }
+                nav a {
+                    color: white;
+                    text-decoration: none;
+                    padding: 0.5rem 1rem;
+                    border-radius: 4px;
+                    transition: background 0.2s;
+                }
+                nav a:hover {
+                    background: #555;
+                }
+                nav a.active {
+                    background: #007bff;
+                }
+                h1 {
+                    color: #333;
+                    margin-bottom: 1.5rem;
+                }
+            </style>
         {% endblock %}
 
         {% block javascripts %}
@@ -12,6 +56,26 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <nav>
+            <div class="nav-container">
+                <a href="{{ path('admin_home') }}" {% if app.request.get('_route') == 'admin_home' %}class="active"{% endif %}>Custom Home</a>
+                <a href="{{ path('app_admin_dashboard') }}" {% if app.request.get('_route') starts with 'app_admin' %}class="active"{% endif %}>Bundle Admin</a>
+            </div>
+        </nav>
+        <div class="container">
+            {% if block('headerTitle') is defined or block('headerButtons') is defined %}
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div>
+                        {% block headerTitle %}{% endblock %}
+                    </div>
+                    <div>
+                        {% block headerButtons %}{% endblock %}
+                    </div>
+                </div>
+            {% endif %}
+            {% block content %}
+                {% block body %}{% endblock %}
+            {% endblock %}
+        </div>
     </body>
 </html>

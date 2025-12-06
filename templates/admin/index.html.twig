@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+    <h1>Admin Bundle Demo</h1>
+
+    <div style="margin-bottom: 2rem; padding: 1.5rem; background: #d1ecf1; border-left: 4px solid #0c5460; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #0c5460;">Two Implementation Approaches</h3>
+        <p style="margin-bottom: 0;">This demo showcases two ways to use the Admin Bundle:</p>
+        <ol>
+            <li><strong>Custom Controller</strong> - Using your own controller with a single generic template (below)</li>
+            <li><strong>Bundle's GenericAdminController</strong> - Zero-code admin using the bundle's built-in routes (click "Bundle Admin" in nav)</li>
+        </ol>
+    </div>
+
+    <h2>Custom Controller Implementation</h2>
+    <p style="color: #666; margin-bottom: 1.5rem;">These use a single generic template with entity parameters:</p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+        {% for entity in entities %}
+            <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <h3 style="margin-top: 0; color: #007bff;">{{ entity.name }}s</h3>
+                <p style="color: #666; font-size: 0.9rem;">Custom route: <code>/custom-admin/{{ entity.name|lower }}</code></p>
+                <a href="{{ path(entity.route, {entity: entity.name|lower}) }}"
+                   style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">
+                    View {{ entity.name }}s
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div style="margin-top: 3rem; padding: 1.5rem; background: #fff3cd; border-left: 4px solid #856404; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #856404;">Template Overrides Enabled</h3>
+        <p>Custom template overrides are active:</p>
+        <ul style="margin-bottom: 0;">
+            <li><strong>Boolean fields</strong> - Rendered with colored badges (✓ Yes / ✗ No)</li>
+            <li><strong>User email</strong> - Rendered as clickable mailto link with icon</li>
+        </ul>
+        <p style="margin-bottom: 0; margin-top: 1rem; font-size: 0.9rem; color: #666;">
+            Located in: <code>templates/bundles/KachnitelAdminBundle/types/</code>
+        </p>
+    </div>
+
+    <div style="margin-top: 2rem; padding: 1.5rem; background: #e9ecef; border-radius: 8px;">
+        <h3>About This Demo</h3>
+        <p>This demonstrates the Admin Bundle using LiveComponents. Features:</p>
+        <ul>
+            <li>Entities marked with <code>#[Admin]</code> attribute for auto-discovery</li>
+            <li>Custom <code>base_layout</code> configuration to integrate with your app design</li>
+            <li>Template override system for customizing property rendering</li>
+            <li>Single generic template reducing duplication</li>
+            <li>Zero-code admin using GenericAdminController (see "Bundle Admin" in nav)</li>
+        </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,3 @@
+kachnitel_admin:
+    base_layout: 'base.html.twig'
+    required_role: false  # For demo purposes, no security

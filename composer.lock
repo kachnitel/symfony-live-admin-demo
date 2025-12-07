@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94a08e5ddfd4491e4d14cefc476c0a59",
+    "content-hash": "abb50e6f242aa6e211b774b3bdecce27",
     "packages": [
         {
             "name": "composer/semver",
@@ -1198,16 +1198,16 @@
         },
         {
             "name": "kachnitel/admin-bundle",
-            "version": "0.0.3",
+            "version": "0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kachnitel/FrdAdminBundle.git",
-                "reference": "102eea5226bbfca920aaf4da9accee7fa4303031"
+                "reference": "ed566805037dd5046750050111683071902e7c15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kachnitel/FrdAdminBundle/zipball/102eea5226bbfca920aaf4da9accee7fa4303031",
-                "reference": "102eea5226bbfca920aaf4da9accee7fa4303031",
+                "url": "https://api.github.com/repos/kachnitel/FrdAdminBundle/zipball/ed566805037dd5046750050111683071902e7c15",
+                "reference": "ed566805037dd5046750050111683071902e7c15",
                 "shasum": ""
             },
             "require": {
@@ -1269,9 +1269,9 @@
             ],
             "support": {
                 "issues": "https://github.com/kachnitel/FrdAdminBundle/issues",
-                "source": "https://github.com/kachnitel/FrdAdminBundle/tree/v0.0.3"
+                "source": "https://github.com/kachnitel/FrdAdminBundle/tree/v0.0.4"
             },
-            "time": "2025-12-06T18:24:51+00:00"
+            "time": "2025-12-07T03:15:40+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -8065,16 +8065,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v5.6.2",
+            "version": "v5.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "3a454ca033b9e06b63282ce19562e892747449bb"
+                "reference": "dca41cd15c2ac9d055ad70dbfd011130757d1f82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/3a454ca033b9e06b63282ce19562e892747449bb",
-                "reference": "3a454ca033b9e06b63282ce19562e892747449bb",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/dca41cd15c2ac9d055ad70dbfd011130757d1f82",
+                "reference": "dca41cd15c2ac9d055ad70dbfd011130757d1f82",
                 "shasum": ""
             },
             "require": {
@@ -8117,9 +8117,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v5.6.2"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.7.0"
             },
-            "time": "2025-10-21T19:32:17+00:00"
+            "time": "2025-12-06T11:56:16+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -8575,16 +8575,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.5.0",
+            "version": "12.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "fef037fe50d20ce826cdbd741b7a2afcdec5f45b"
+                "reference": "e33a5132ea24119400f6ce5bce6665922e968bad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fef037fe50d20ce826cdbd741b7a2afcdec5f45b",
-                "reference": "fef037fe50d20ce826cdbd741b7a2afcdec5f45b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e33a5132ea24119400f6ce5bce6665922e968bad",
+                "reference": "e33a5132ea24119400f6ce5bce6665922e968bad",
                 "shasum": ""
             },
             "require": {
@@ -8652,7 +8652,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.0"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.1"
             },
             "funding": [
                 {
@@ -8676,7 +8676,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-05T04:59:40+00:00"
+            "time": "2025-12-06T12:19:17+00:00"
         },
         {
             "name": "sebastian/cli-parser",

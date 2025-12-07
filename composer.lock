@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "abb50e6f242aa6e211b774b3bdecce27",
+    "content-hash": "a2e73488c76d40ceb3a6d79850f02da8",
     "packages": [
         {
             "name": "composer/semver",
@@ -1198,16 +1198,16 @@
         },
         {
             "name": "kachnitel/admin-bundle",
-            "version": "0.0.4",
+            "version": "0.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kachnitel/FrdAdminBundle.git",
-                "reference": "ed566805037dd5046750050111683071902e7c15"
+                "reference": "4bf1ec480be8ebb2b1129c7e30c1ef2b2883d286"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kachnitel/FrdAdminBundle/zipball/ed566805037dd5046750050111683071902e7c15",
-                "reference": "ed566805037dd5046750050111683071902e7c15",
+                "url": "https://api.github.com/repos/kachnitel/FrdAdminBundle/zipball/4bf1ec480be8ebb2b1129c7e30c1ef2b2883d286",
+                "reference": "4bf1ec480be8ebb2b1129c7e30c1ef2b2883d286",
                 "shasum": ""
             },
             "require": {
@@ -1269,9 +1269,9 @@
             ],
             "support": {
                 "issues": "https://github.com/kachnitel/FrdAdminBundle/issues",
-                "source": "https://github.com/kachnitel/FrdAdminBundle/tree/v0.0.4"
+                "source": "https://github.com/kachnitel/FrdAdminBundle/tree/v0.0.5"
             },
-            "time": "2025-12-07T03:15:40+00:00"
+            "time": "2025-12-07T04:11:36+00:00"
         },
         {
             "name": "monolog/monolog",

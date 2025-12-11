@@ -13,6 +13,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(
     name: 'app:load-demo-data',
@@ -21,7 +22,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class LoadDemoDataCommand extends Command
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserPasswordHasherInterface $passwordHasher
     ) {
         parent::__construct();
     }
@@ -32,9 +34,9 @@ class LoadDemoDataCommand extends Command
 
         // Create users
         $users = [
-            ['name' => 'John Doe', 'email' => 'john@example.com', 'active' => true],
-            ['name' => 'Jane Smith', 'email' => 'jane@example.com', 'active' => true],
-            ['name' => 'Bob Johnson', 'email' => 'bob@example.com', 'active' => false],
+            ['name' => 'John Doe', 'email' => 'john@example.com', 'password' => 'password', 'active' => true],
+            ['name' => 'Jane Smith', 'email' => 'jane@example.com', 'password' => 'password', 'active' => true],
+            ['name' => 'Bob Johnson', 'email' => 'bob@example.com', 'password' => 'password', 'active' => false],
         ];
 
         foreach ($users as $userData) {
@@ -42,6 +44,11 @@ class LoadDemoDataCommand extends Command
             $user->setName($userData['name'])
                 ->setEmail($userData['email'])
                 ->setActive($userData['active']);
+
+            // Hash the password
+            $hashedPassword = $this->passwordHasher->hashPassword($user, $userData['password']);
+            $user->setPassword($hashedPassword);
+
             $this->entityManager->persist($user);
         }
 

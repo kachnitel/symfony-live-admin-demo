@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+<div style="max-width: 400px; margin: 100px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+    <h1 style="text-align: center;">Log in</h1>
+
+    {% if error %}
+        <div style="color: red; padding: 10px; background: #fee; border-radius: 4px; margin-bottom: 15px;">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+    {% endif %}
+
+    <form method="post" action="{{ path('app_login') }}">
+        <div style="margin-bottom: 15px;">
+            <label for="email" style="display: block; margin-bottom: 5px;">Email:</label>
+            <input type="email"
+                   value="{{ last_username }}"
+                   name="email"
+                   id="email"
+                   required
+                   autofocus
+                   autocomplete="username"
+                   style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="password" style="display: block; margin-bottom: 5px;">Password:</label>
+            <input type="password"
+                   name="password"
+                   id="password"
+                   required
+                   autocomplete="current-password"
+                   style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('login_form') }}">
+
+        <button type="submit" style="width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+            Log in
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -7,14 +7,23 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Kachnitel\AdminBundle\Attribute\Admin;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
 #[Admin(
-    icon: 'person'
+    icon: 'person',
+    permissions: [
+        'index' => 'ROLE_USER',
+        'show' => 'ROLE_USER',
+        'edit' => 'ROLE_USER',
+        'create' => 'ROLE_USER',
+        'delete' => 'ROLE_USER',
+    ],
+    excludeColumns: ['password']
 )]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,6 +32,9 @@ class User implements UserInterface
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private string $email;
+
+    #[ORM\Column(type: 'string')]
+    private string $password;
 
     #[ORM\Column(type: 'string', length: 100)]
     private string $name;
@@ -66,6 +78,20 @@ class User implements UserInterface
     public function setActive(bool $active): self
     {
         $this->active = $active;
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
         return $this;
     }
 

@@ -1,27 +1,111 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin Dashboard{% endblock %}
+{% block title %}Admin Bundle Demo{% endblock %}
 
 {% block body %}
-    <h1>Admin Bundle Demo</h1>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>Kachnitel\AdminBundle Demo</h1>
+        <div>
+            <a href="https://github.com/kachnitel/FrdAdminBundle" target="_blank"
+               style="display: inline-block; padding: 0.5rem 1rem; background: #24292e; color: white; text-decoration: none; border-radius: 4px; margin-right: 0.5rem;">
+                📦 GitHub
+            </a>
+            <a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/CHANGELOG.md" target="_blank"
+               style="display: inline-block; padding: 0.5rem 1rem; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; margin-right: 0.5rem;">
+                📝 Changelog
+            </a>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a href="{{ path('app_logout') }}"
+                   style="display: inline-block; padding: 0.5rem 1rem; background: #dc3545; color: white; text-decoration: none; border-radius: 4px;">
+                    🚪 Logout
+                </a>
+            {% else %}
+                <a href="{{ path('app_login') }}"
+                   style="display: inline-block; padding: 0.5rem 1rem; background: #28a745; color: white; text-decoration: none; border-radius: 4px;">
+                    🔑 Login
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div style="margin-bottom: 2rem; padding: 1.5rem; background: #f8f9fa; border-left: 4px solid #007bff; border-radius: 4px;">
+        <h2 style="margin-top: 0; color: #007bff;">About Kachnitel\AdminBundle</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6;">
+            A Symfony bundle for rapid admin interface development using <strong>LiveComponents</strong>.
+            Build fully functional CRUD interfaces with just PHP attributes - no boilerplate code required.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <div>
+                <strong>🚀 Zero Boilerplate</strong><br>
+                <small>Just add <code>#[Admin]</code> to your entities</small>
+            </div>
+            <div>
+                <strong>🔐 Built-in Security</strong><br>
+                <small>Per-action permission control via attributes</small>
+            </div>
+            <div>
+                <strong>🎨 Customizable</strong><br>
+                <small>Override templates, use custom forms</small>
+            </div>
+            <div>
+                <strong>⚡ LiveComponents</strong><br>
+                <small>Real-time filtering and interactions</small>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 2rem; padding: 1.5rem; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #856404;">💡 Quick Start</h3>
+        <p>Mark your entity with the <code>#[Admin]</code> attribute:</p>
+        <pre style="background: #fff; padding: 1rem; border-radius: 4px; overflow-x: auto;"><code>use Kachnitel\AdminBundle\Attribute\Admin;
+
+#[Admin(
+    icon: 'person',
+    permissions: [
+        'index' => 'ROLE_USER',
+        'edit' => 'ROLE_ADMIN',
+    ]
+)]
+class User { ... }</code></pre>
+        <p style="margin-bottom: 0;">
+            <a href="https://github.com/kachnitel/FrdAdminBundle#usage" target="_blank" style="color: #007bff;">
+                📖 View full documentation →
+            </a>
+        </p>
+    </div>
 
     <div style="margin-bottom: 2rem; padding: 1.5rem; background: #d1ecf1; border-left: 4px solid #0c5460; border-radius: 4px;">
         <h3 style="margin-top: 0; color: #0c5460;">Two Implementation Approaches</h3>
-        <p style="margin-bottom: 0;">This demo showcases two ways to use the Admin Bundle:</p>
-        <ol>
-            <li><strong>Custom Controller</strong> - Using your own controller with a single generic template (below)</li>
-            <li><strong>Bundle's GenericAdminController</strong> - Zero-code admin using the bundle's built-in routes (click "Bundle Admin" in nav)</li>
+        <p>This demo showcases two ways to use the bundle:</p>
+        <ol style="margin-bottom: 0;">
+            <li>
+                <strong>GenericAdminController</strong> - Zero-code admin using the bundle's built-in routes
+                <br><small>→ Click "Bundle Admin" in navigation to see it in action</small>
+            </li>
+            <li>
+                <strong>Custom Controller</strong> - Use bundle components in your own controllers
+                <br><small>→ See examples below</small>
+            </li>
         </ol>
     </div>
 
-    <h2>Custom Controller Implementation</h2>
-    <p style="color: #666; margin-bottom: 1.5rem;">These use a single generic template with entity parameters:</p>
+    <h2>Custom Controller Examples</h2>
+    <p style="color: #666; margin-bottom: 1.5rem;">
+        These demonstrate using the bundle's components with custom routes and controllers:
+    </p>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
         {% for entity in entities %}
             <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 <h3 style="margin-top: 0; color: #007bff;">{{ entity.name }}s</h3>
-                <p style="color: #666; font-size: 0.9rem;">Custom route: <code>/custom-admin/{{ entity.name|lower }}</code></p>
+                <p style="color: #666; font-size: 0.9rem;">
+                    Custom route: <code>/custom-admin/{{ entity.name|lower }}</code>
+                </p>
+                {% if entity.name == 'User' and not is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <p style="color: #dc3545; font-size: 0.85rem; margin-top: 0.5rem;">
+                        🔒 Login required to access
+                    </p>
+                {% endif %}
                 <a href="{{ path(entity.route, {entity: entity.name|lower}) }}"
                    style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">
                     View {{ entity.name }}s
@@ -30,27 +114,90 @@
         {% endfor %}
     </div>
 
-    <div style="margin-top: 3rem; padding: 1.5rem; background: #fff3cd; border-left: 4px solid #856404; border-radius: 4px;">
-        <h3 style="margin-top: 0; color: #856404;">Template Overrides Enabled</h3>
-        <p>Custom template overrides are active:</p>
-        <ul style="margin-bottom: 0;">
-            <li><strong>Boolean fields</strong> - Rendered with colored badges (✓ Yes / ✗ No)</li>
-            <li><strong>User email</strong> - Rendered as clickable mailto link with icon</li>
-        </ul>
-        <p style="margin-bottom: 0; margin-top: 1rem; font-size: 0.9rem; color: #666;">
-            Located in: <code>templates/bundles/KachnitelAdminBundle/types/</code>
+    <div style="margin-top: 3rem; padding: 1.5rem; background: #e7f3ff; border-left: 4px solid #2196F3; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #1976D2;">🧩 Core Components</h3>
+        <p>The bundle provides reusable Symfony UX components:</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+            <div>
+                <strong>EntityList Component</strong><br>
+                <small>
+                    Live-searchable entity lists with filtering
+                    <br><a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/src/Twig/Components/EntityList.php" target="_blank" style="color: #007bff; font-size: 0.85rem;">View code →</a>
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 2rem; padding: 1.5rem; background: #fff; border: 1px solid #dee2e6; border-radius: 8px;">
+        <h3 style="margin-top: 0;">🎨 Template Override System</h3>
+        <p>Customize how any property is rendered by placing templates in your app:</p>
+        <pre style="background: #f8f9fa; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.85rem;"><code>templates/bundles/KachnitelAdminBundle/types/
+├── boolean/_preview.html.twig    # Custom boolean rendering
+├── User/email/_preview.html.twig  # User-specific email field
+└── _preview.html.twig             # Default fallback</code></pre>
+        <p style="margin-bottom: 0;">
+            Active overrides in this demo:
         </p>
+        {# TODO: Add links to code #}
+        <ul style="margin-bottom: 0;">
+            <li><strong>Boolean fields</strong> - Colored badges (✓ Yes / ✗ No)</li>
+            <li><strong>User email</strong> - Clickable mailto link with icon</li>
+        </ul>
+    </div>
+
+    <div style="margin-top: 2rem; padding: 1.5rem; background: #d4edda; border-left: 4px solid #28a745; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #155724;">🔐 Security Features</h3>
+        <p>This demo includes authentication to showcase security integration:</p>
+        <ul>
+            <li>Form-based login with CSRF protection</li>
+            <li>Permission-based access control via <code>#[Admin(permissions: [...])]</code></li>
+            <li>Security voter integration for fine-grained permissions</li>
+            <li>Per-action authorization (index, show, edit, delete)</li>
+        </ul>
+        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+            <p style="margin-bottom: 0; padding: 1rem; background: #fff; border-radius: 4px;">
+                <strong>Try it:</strong> Login with <code>john@example.com</code> / <code>password</code> to access restricted entities
+            </p>
+        {% else %}
+            <p style="margin-bottom: 0; padding: 1rem; background: #fff; border-radius: 4px;">
+                <strong>✅ Logged in</strong> - You can now access all User CRUD operations
+            </p>
+        {% endif %}
     </div>
 
     <div style="margin-top: 2rem; padding: 1.5rem; background: #e9ecef; border-radius: 8px;">
-        <h3>About This Demo</h3>
-        <p>This demonstrates the Admin Bundle using LiveComponents. Features:</p>
-        <ul>
-            <li>Entities marked with <code>#[Admin]</code> attribute for auto-discovery</li>
-            <li>Custom <code>base_layout</code> configuration to integrate with your app design</li>
-            <li>Template override system for customizing property rendering</li>
-            <li>Single generic template reducing duplication</li>
-            <li>Zero-code admin using GenericAdminController (see "Bundle Admin" in nav)</li>
-        </ul>
+        <h3>📚 Documentation & Resources</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <a href="https://github.com/kachnitel/FrdAdminBundle" target="_blank"
+               style="display: block; padding: 1rem; background: #fff; border-radius: 4px; text-decoration: none; color: #212529; border: 1px solid #dee2e6;">
+                <strong style="color: #007bff;">📦 GitHub Repository</strong><br>
+                <small>Source code, issues, and PRs</small>
+            </a>
+            <a href="https://github.com/kachnitel/FrdAdminBundle#readme" target="_blank"
+               style="display: block; padding: 1rem; background: #fff; border-radius: 4px; text-decoration: none; color: #212529; border: 1px solid #dee2e6;">
+                <strong style="color: #007bff;">📖 README</strong><br>
+                <small>Installation and quick start</small>
+            </a>
+            <a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/CHANGELOG.md" target="_blank"
+               style="display: block; padding: 1rem; background: #fff; border-radius: 4px; text-decoration: none; color: #212529; border: 1px solid #dee2e6;">
+                <strong style="color: #007bff;">📝 Changelog</strong><br>
+                <small>Version history and updates</small>
+            </a>
+            <a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/docs/CONFIGURATION.md" target="_blank"
+               style="display: block; padding: 1rem; background: #fff; border-radius: 4px; text-decoration: none; color: #212529; border: 1px solid #dee2e6;">
+                <strong style="color: #007bff;">⚙️ Configuration</strong><br>
+                <small>Bundle configuration options</small>
+            </a>
+            <a href="https://symfony.com/bundles/ux-live-component/current/index.html" target="_blank"
+               style="display: block; padding: 1rem; background: #fff; border-radius: 4px; text-decoration: none; color: #212529; border: 1px solid #dee2e6;">
+                <strong style="color: #007bff;">⚡ UX LiveComponent Docs</strong><br>
+                <small>Learn about LiveComponents</small>
+            </a>
+            <a href="https://github.com/kachnitel/FrdAdminBundle/tree/master/src/Twig/Components" target="_blank"
+               style="display: block; padding: 1rem; background: #fff; border-radius: 4px; text-decoration: none; color: #212529; border: 1px solid #dee2e6;">
+                <strong style="color: #007bff;">🧩 Component Source</strong><br>
+                <small>Browse component implementations</small>
+            </a>
+        </div>
     </div>
 {% endblock %}

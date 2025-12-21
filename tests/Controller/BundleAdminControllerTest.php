@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BundleAdminControllerTest extends WebTestCase
 {
+    private static ?User $testUser = null;
+
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -17,9 +20,10 @@ class BundleAdminControllerTest extends WebTestCase
         $container = self::getContainer();
         $entityManager = $container->get('doctrine')->getManager();
 
-        // Create schema
+        // Drop and recreate schema to ensure clean state
         $schemaTool = new \Doctrine\ORM\Tools\SchemaTool($entityManager);
         $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
+        $schemaTool->dropSchema($metadata);
         $schemaTool->createSchema($metadata);
 
         // Load demo data
@@ -31,6 +35,16 @@ class BundleAdminControllerTest extends WebTestCase
         ]);
         $output = new \Symfony\Component\Console\Output\NullOutput();
         $application->run($input, $output);
+
+        // Create a test user for authentication
+        $passwordHasher = $container->get('Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface');
+        self::$testUser = new User();
+        self::$testUser->setEmail('test-admin@example.com');
+        self::$testUser->setName('Test Admin');
+        self::$testUser->setActive(true);
+        self::$testUser->setPassword($passwordHasher->hashPassword(self::$testUser, 'testpass'));
+        $entityManager->persist(self::$testUser);
+        $entityManager->flush();
 
         self::ensureKernelShutdown();
     }
@@ -46,13 +60,26 @@ class BundleAdminControllerTest extends WebTestCase
         $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
         $schemaTool->dropSchema($metadata);
 
+        self::$testUser = null;
         self::ensureKernelShutdown();
         parent::tearDownAfterClass();
     }
 
-    public function testBundleDashboardLoads(): void
+    private function createAuthenticatedClient(): \Symfony\Bundle\FrameworkBundle\KernelBrowser
     {
         $client = static::createClient();
+
+        // Refetch user from database
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $user = $entityManager->getRepository(User::class)->findOneBy(['email' => 'test-admin@example.com']);
+        $client->loginUser($user);
+
+        return $client;
+    }
+
+    public function testBundleDashboardLoads(): void
+    {
+        $client = $this->createAuthenticatedClient();
         $client->request('GET', '/admin');
 
         $this->assertResponseIsSuccessful();
@@ -61,7 +88,7 @@ class BundleAdminControllerTest extends WebTestCase
 
     public function testBundleUserIndexPageLoads(): void
     {
-        $client = static::createClient();
+        $client = $this->createAuthenticatedClient();
         $client->request('GET', '/admin/user');
 
         $this->assertResponseIsSuccessful();
@@ -69,7 +96,7 @@ class BundleAdminControllerTest extends WebTestCase
 
     public function testBundleBicycleIndexPageLoads(): void
     {
-        $client = static::createClient();
+        $client = $this->createAuthenticatedClient();
         $client->request('GET', '/admin/bicycle');
 
         $this->assertResponseIsSuccessful();
@@ -77,7 +104,7 @@ class BundleAdminControllerTest extends WebTestCase
 
     public function testBundlePartIndexPageLoads(): void
     {
-        $client = static::createClient();
+        $client = $this->createAuthenticatedClient();
         $client->request('GET', '/admin/part');
 
         $this->assertResponseIsSuccessful();
@@ -85,7 +112,7 @@ class BundleAdminControllerTest extends WebTestCase
 
     public function testBundleInvalidEntityReturns404(): void
     {
-        $client = static::createClient();
+        $client = $this->createAuthenticatedClient();
         $client->request('GET', '/admin/nonexistent');
 
         $this->assertResponseStatusCodeSame(404);

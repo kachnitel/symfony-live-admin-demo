@@ -2,6 +2,24 @@
 
 A minimal demonstration of the **kachnitel/admin-bundle** showcasing LiveComponents for entity management.
 
+## Quick Start
+
+```bash
+# Install dependencies
+composer install
+
+# Create database and load demo data
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate --no-interaction
+php bin/console app:load-demo-data
+php bin/console app:create-demo-user
+
+# Start server
+symfony server:start
+```
+
+**Login:** `user@example.com` / `password`
+
 ## Database
 
 SQLite database located at `var/data.db` with sample data:
@@ -45,9 +63,9 @@ All entities use the `#[Admin]` attribute for auto-discovery:
 #[Admin(label: 'Bicycles', icon: 'pedal_bike')]
 ```
 
-**Part.php**
+**Part.php** (with batch actions enabled)
 ```php
-#[Admin(label: 'Parts', icon: 'settings')]
+#[Admin(label: 'Parts', icon: 'settings', enableBatchActions: true)]
 ```
 
 ### 3. Template Overrides
@@ -70,7 +88,7 @@ Custom rendering via template overrides in `templates/bundles/KachnitelAdminBund
 ```yaml
 kachnitel_admin:
     base_layout: 'base.html.twig'
-    required_role: 'PUBLIC_ACCESS'
+    required_role: null  # For demo purposes
 ```
 
 The bundle integrates with the app's base layout using these blocks:
@@ -78,6 +96,80 @@ The bundle integrates with the app's base layout using these blocks:
 - `{% block headerTitle %}` - Page header
 - `{% block headerButtons %}` - Action buttons
 - `{% block content %}` - Main content
+
+## Installation Notes
+
+This demo shows the complete manual setup process. For new projects, many of these steps can be automated via Symfony Flex recipes.
+
+### What Was Configured Manually
+
+#### 1. Bundle Configuration (`config/packages/kachnitel_admin.yaml`)
+```yaml
+kachnitel_admin:
+    base_layout: 'base.html.twig'
+    required_role: null
+```
+
+#### 2. Routes (imported via attribute-based routing)
+The bundle's routes are auto-discovered. For custom routes, see `src/Controller/AdminController.php`.
+
+#### 3. Security (`config/packages/security.yaml`)
+- User entity as provider
+- Form login with `/login` path
+- Access control: `/admin` requires `ROLE_USER`
+
+#### 4. Stimulus Controller for Batch Actions
+
+For batch operations (shift-click multi-select, batch delete), the bundle provides a Stimulus controller that needs to be registered:
+
+**`assets/controllers.json`** - Add the bundle's controller:
+```json
+{
+    "controllers": {
+        "@kachnitel/admin-bundle": {
+            "batch-select": {
+                "enabled": true,
+                "fetch": "eager",
+                "autoimport": {}
+            }
+        }
+    }
+}
+```
+
+**`importmap.php`** - Add the importmap entry:
+```php
+return [
+    // ... other entries
+    '@kachnitel/admin-bundle/batch-select_controller.js' => [
+        'path' => '@kachnitel/admin-bundle/batch-select_controller.js',
+    ],
+];
+```
+
+#### 5. Symlinked Development
+
+This demo uses a symlinked local version of the bundle for development:
+
+**`composer.json`**:
+```json
+{
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../FrdAdminBundle"
+        }
+    ],
+    "require": {
+        "kachnitel/admin-bundle": "@dev"
+    }
+}
+```
+
+After changes to the bundle, clear cache:
+```bash
+php bin/console cache:clear
+```
 
 ## Running the Demo
 
@@ -87,13 +179,13 @@ The bundle integrates with the app's base layout using these blocks:
    ```
 
 2. **Visit**:
-   - Home: `http://localhost:8000/`
-   - Custom Admin: `http://localhost:8000/custom-admin/user`
+   - Login: `http://localhost:8000/login`
    - Bundle Admin: `http://localhost:8000/admin`
+   - Custom Admin: `http://localhost:8000/custom-admin/user`
 
-3. **Load More Data** (if needed):
+3. **Load Demo Data**:
    ```bash
-   bin/console app:load-demo-data
+   php bin/console app:load-demo-data
    ```
 
 ## Running Tests
@@ -109,47 +201,92 @@ vendor/bin/phpunit tests/Entity           # Unit tests for entities
 vendor/bin/phpunit tests/Controller       # Integration/functional tests
 ```
 
+### Test Setup
+
+Tests use `setUpBeforeClass`/`tearDownAfterClass` for database lifecycle:
+
+```php
+public static function setUpBeforeClass(): void
+{
+    parent::setUpBeforeClass();
+    self::bootKernel();
+
+    $entityManager = self::getContainer()->get('doctrine')->getManager();
+    $schemaTool = new SchemaTool($entityManager);
+    $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
+
+    // Drop and recreate for clean state
+    $schemaTool->dropSchema($metadata);
+    $schemaTool->createSchema($metadata);
+
+    self::ensureKernelShutdown();
+}
+```
+
 ### Test Coverage
 
-**Entity Tests** (7 tests, 25 assertions) - ✅ ALL PASSING
+**Entity Tests** (7 tests, 25 assertions) - ALL PASSING
 - Verifies `#[Admin]` attributes on all entities
 - Tests entity getters/setters
 - Tests bicycle-part relationships
 
 **LiveComponent Tests** - Uses `InteractsWithLiveComponents` trait
 - Tests EntityList component rendering
-- Automatic database setup/teardown per test
+- Uses real `User` entity for authentication (not `InMemoryUser`)
 
-**Functional Tests** - Tests bundle routes
-- Database lifecycle management with `setUpBeforeClass`/`tearDownAfterClass`
-- Tests GenericAdminController routes
+**Functional Tests** - Tests bundle routes with authentication
+- Creates authenticated client with `loginUser()`
+- Tests dashboard, entity pages, and 404 handling
 
 ## File Structure
 
 ```
 src/
 ├── Controller/
-│   └── AdminController.php          # Custom controller with generic route
+│   ├── AdminController.php          # Custom controller with generic route
+│   └── SecurityController.php       # Login/logout handling
 ├── Entity/
 │   ├── User.php                     # #[Admin] attribute
 │   ├── Bicycle.php                  # #[Admin] attribute
-│   └── Part.php                     # #[Admin] attribute
+│   └── Part.php                     # #[Admin(enableBatchActions: true)]
 └── Command/
-    └── LoadDemoDataCommand.php      # Sample data loader
+    ├── LoadDemoDataCommand.php      # Sample data loader
+    └── CreateDemoUserCommand.php    # Demo user creator
+
+assets/
+├── app.js                           # Main JS entrypoint
+├── controllers.json                 # Stimulus controller registry
+└── stimulus_bootstrap.js            # Stimulus initialization
 
 templates/
 ├── base.html.twig                   # App base layout
 ├── admin/
 │   ├── index.html.twig              # Home dashboard
 │   └── entity.html.twig             # Generic entity template
+├── security/
+│   └── login.html.twig              # Login form
 └── bundles/
     └── KachnitelAdminBundle/
         └── types/
             ├── boolean/_preview.html.twig              # Boolean override
             └── App/Entity/User/email.html.twig         # User email override
 
-config/packages/
-└── kachnitel_admin.yaml             # Bundle configuration
+config/
+├── packages/
+│   ├── kachnitel_admin.yaml         # Bundle configuration
+│   └── security.yaml                # Security configuration
+└── routes/
+    └── security.yaml                # Login/logout routes
+
+tests/
+├── Entity/                          # Unit tests
+│   ├── UserTest.php
+│   ├── BicycleTest.php
+│   └── PartTest.php
+└── Controller/                      # Functional tests
+    ├── AdminControllerTest.php      # LiveComponent tests
+    ├── BundleAdminControllerTest.php # Bundle route tests
+    └── SecurityControllerTest.php   # Auth tests
 ```
 
 ## Key Concepts Demonstrated
@@ -160,3 +297,6 @@ config/packages/
 4. **Base Layout Integration**: Bundle extends your app's layout
 5. **Zero-Code Admin**: GenericAdminController requires no custom code
 6. **Custom Routes**: Mix bundle routes with your own controller when needed
+7. **Batch Operations**: Multi-select with Shift+Click and bulk delete
+8. **Security Integration**: Form login with entity-based user provider
+9. **Testing Patterns**: LiveComponent testing with real entities

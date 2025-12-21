@@ -9,6 +9,39 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SecurityControllerTest extends WebTestCase
 {
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        // Initialize test database
+        self::bootKernel();
+        $container = self::getContainer();
+        $entityManager = $container->get('doctrine')->getManager();
+
+        // Drop and recreate schema to ensure clean state
+        $schemaTool = new \Doctrine\ORM\Tools\SchemaTool($entityManager);
+        $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
+        $schemaTool->dropSchema($metadata);
+        $schemaTool->createSchema($metadata);
+
+        self::ensureKernelShutdown();
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        // Clean up test database
+        self::bootKernel();
+        $container = self::getContainer();
+        $entityManager = $container->get('doctrine')->getManager();
+
+        $schemaTool = new \Doctrine\ORM\Tools\SchemaTool($entityManager);
+        $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
+        $schemaTool->dropSchema($metadata);
+
+        self::ensureKernelShutdown();
+        parent::tearDownAfterClass();
+    }
+
     public function testLoginPage(): void
     {
         $client = static::createClient();

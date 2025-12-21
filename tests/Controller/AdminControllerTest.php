@@ -4,38 +4,28 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Security\Core\User\InMemoryUser;
 use Symfony\UX\LiveComponent\Test\InteractsWithLiveComponents;
 
 class AdminControllerTest extends KernelTestCase
 {
     use InteractsWithLiveComponents;
 
-    protected function setUp(): void
+    private static ?User $testUser = null;
+
+    public static function setUpBeforeClass(): void
     {
-        parent::setUp();
+        parent::setUpBeforeClass();
         self::bootKernel();
 
-        // Initialize test database with sample data
-        $this->initializeTestDatabase();
-    }
-
-    protected function tearDown(): void
-    {
-        // Clean up test database
-        $this->cleanupTestDatabase();
-        parent::tearDown();
-    }
-
-    private function initializeTestDatabase(): void
-    {
         $container = self::getContainer();
         $entityManager = $container->get('doctrine')->getManager();
 
-        // Create schema
+        // Drop and recreate schema to ensure clean state
         $schemaTool = new \Doctrine\ORM\Tools\SchemaTool($entityManager);
         $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
+        $schemaTool->dropSchema($metadata);
         $schemaTool->createSchema($metadata);
 
         // Load demo data
@@ -47,28 +37,47 @@ class AdminControllerTest extends KernelTestCase
         ]);
         $output = new \Symfony\Component\Console\Output\NullOutput();
         $application->run($input, $output);
+
+        // Create a test user for authentication
+        $passwordHasher = $container->get('Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface');
+        self::$testUser = new User();
+        self::$testUser->setEmail('test-component@example.com');
+        self::$testUser->setName('Test Component User');
+        self::$testUser->setActive(true);
+        self::$testUser->setPassword($passwordHasher->hashPassword(self::$testUser, 'testpass'));
+        $entityManager->persist(self::$testUser);
+        $entityManager->flush();
+
+        self::ensureKernelShutdown();
     }
 
-    private function cleanupTestDatabase(): void
+    public static function tearDownAfterClass(): void
     {
+        self::bootKernel();
         $container = self::getContainer();
         $entityManager = $container->get('doctrine')->getManager();
 
         $schemaTool = new \Doctrine\ORM\Tools\SchemaTool($entityManager);
         $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
         $schemaTool->dropSchema($metadata);
+
+        self::$testUser = null;
+        self::ensureKernelShutdown();
+        parent::tearDownAfterClass();
+    }
+
+    private function getTestUser(): User
+    {
+        $entityManager = self::getContainer()->get('doctrine')->getManager();
+        return $entityManager->getRepository(User::class)->findOneBy(['email' => 'test-component@example.com']);
     }
 
     public function testEntityListComponentRendersForUser(): void
     {
         $component = $this->createLiveComponent('K:Admin:EntityList', [
-            'entityClass' => \App\Entity\User::class,
+            'entityClass' => User::class,
             'entityShortClass' => 'User',
-        ])->actingAs(new InMemoryUser(
-            'testUser',
-            null,
-            ['ROLE_ADMIN']
-        ));
+        ])->actingAs($this->getTestUser());
 
         $rendered = $component->render();
         $this->assertStringContainsString('User', $rendered->toString());
@@ -79,7 +88,7 @@ class AdminControllerTest extends KernelTestCase
         $component = $this->createLiveComponent('K:Admin:EntityList', [
             'entityClass' => \App\Entity\Bicycle::class,
             'entityShortClass' => 'Bicycle',
-        ]);
+        ])->actingAs($this->getTestUser());
 
         $rendered = $component->render();
         $this->assertStringContainsString('Bicycle', $rendered->toString());
@@ -90,7 +99,7 @@ class AdminControllerTest extends KernelTestCase
         $component = $this->createLiveComponent('K:Admin:EntityList', [
             'entityClass' => \App\Entity\Part::class,
             'entityShortClass' => 'Part',
-        ]);
+        ])->actingAs($this->getTestUser());
 
         $rendered = $component->render();
         $this->assertStringContainsString('Part', $rendered->toString());

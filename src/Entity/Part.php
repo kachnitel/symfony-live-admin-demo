@@ -10,7 +10,8 @@ use Kachnitel\AdminBundle\Attribute\Admin;
 #[ORM\Entity]
 #[ORM\Table(name: 'parts')]
 #[Admin(
-    icon: 'settings'
+    icon: 'settings',
+    enableBatchActions: true
 )]
 class Part
 {

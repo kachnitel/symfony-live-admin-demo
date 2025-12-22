@@ -193,12 +193,27 @@ php bin/console cache:clear
 The demo includes comprehensive tests using Symfony's test framework and the LiveComponent test helpers.
 
 ```bash
-# Run all tests
+# Run all tests (excludes browser tests)
 vendor/bin/phpunit
 
 # Run specific test suites
 vendor/bin/phpunit tests/Entity           # Unit tests for entities
 vendor/bin/phpunit tests/Controller       # Integration/functional tests
+
+# Run browser tests (requires geckodriver)
+vendor/bin/bdi detect drivers             # Install browser driver first
+vendor/bin/phpunit -c phpunit-browser.xml # Run browser tests
+```
+
+### Browser Tests
+
+Browser tests use Symfony Panther to test JavaScript functionality (batch-select controller).
+They are excluded from regular test runs due to their slower execution time.
+
+**Setup:**
+```bash
+composer require --dev symfony/panther dbrekelmans/bdi
+vendor/bin/bdi detect drivers
 ```
 
 ### Test Setup
@@ -280,13 +295,13 @@ config/
 
 tests/
 ├── Entity/                          # Unit tests
-│   ├── UserTest.php
-│   ├── BicycleTest.php
-│   └── PartTest.php
-└── Controller/                      # Functional tests
-    ├── AdminControllerTest.php      # LiveComponent tests
-    ├── BundleAdminControllerTest.php # Bundle route tests
-    └── SecurityControllerTest.php   # Auth tests
+│   └── EntityAttributeTest.php      # Admin attribute tests
+├── Controller/                      # Functional tests
+│   ├── AdminControllerTest.php      # LiveComponent tests
+│   ├── BundleAdminControllerTest.php # Bundle route tests
+│   └── SecurityControllerTest.php   # Auth tests
+└── Browser/                         # Browser tests (Panther)
+    └── BatchSelectControllerTest.php # JS functionality tests
 ```
 
 ## Key Concepts Demonstrated

@@ -29,6 +29,6 @@ return [
         'version' => '8.0.20',
     ],
     '@kachnitel/admin-bundle/batch-select_controller.js' => [
-        'path' => '@kachnitel/admin-bundle/batch-select_controller.js',
+        'path' => './vendor/kachnitel/admin-bundle/assets/controllers/batch-select_controller.js',
     ],
 ];

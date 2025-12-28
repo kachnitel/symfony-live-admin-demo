@@ -22,13 +22,13 @@ return [
     '@symfony/ux-live-component' => [
         'path' => './vendor/symfony/ux-live-component/assets/dist/live_controller.js',
     ],
+    '@kachnitel/admin-bundle/batch-select_controller.js' => [
+        'path' => '@kachnitel/admin-bundle/controllers/batch-select_controller.js',
+    ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],
     '@hotwired/turbo' => [
         'version' => '8.0.20',
-    ],
-    '@kachnitel/admin-bundle/batch-select_controller.js' => [
-        'path' => './vendor/kachnitel/admin-bundle/assets/controllers/batch-select_controller.js',
     ],
 ];

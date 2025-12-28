@@ -101,9 +101,17 @@ class User { ... }</code></pre>
                 <p style="color: #666; font-size: 0.9rem;">
                     Custom route: <code>/custom-admin/{{ entity.name|lower }}</code>
                 </p>
-                {% if entity.name == 'User' and not is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <p style="color: #dc3545; font-size: 0.85rem; margin-top: 0.5rem;">
-                        🔒 Login required to access
+                {% if entity.name == 'User' %}
+                    <p style="color: {% if is_granted('IS_AUTHENTICATED_FULLY') %}#28a745{% else %}#dc3545{% endif %}; font-size: 0.85rem; margin-top: 0.5rem;">
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            Requires <code>ROLE_USER</code>
+                        {% else %}
+                            🔒 Requires <code>ROLE_USER</code> (login to access)
+                        {% endif %}
+                    </p>
+                {% else %}
+                    <p style="color: #6c757d; font-size: 0.85rem; margin-top: 0.5rem;">
+                        No permission required (public)
                     </p>
                 {% endif %}
                 <a href="{{ path(entity.route, {entity: entity.name|lower}) }}"
@@ -147,20 +155,33 @@ class User { ... }</code></pre>
 
     <div style="margin-top: 2rem; padding: 1.5rem; background: #d4edda; border-left: 4px solid #28a745; border-radius: 4px;">
         <h3 style="margin-top: 0; color: #155724;">🔐 Security Features</h3>
-        <p>This demo includes authentication to showcase security integration:</p>
+        <p>This demo showcases two-level permission control:</p>
         <ul>
-            <li>Form-based login with CSRF protection</li>
-            <li>Permission-based access control via <code>#[Admin(permissions: [...])]</code></li>
-            <li>Security voter integration for fine-grained permissions</li>
-            <li>Per-action authorization (index, show, edit, delete)</li>
+            <li><strong>Global setting:</strong> <code>required_role: null</code> disables bundle-wide authentication</li>
+            <li><strong>Entity-level:</strong> <code>#[Admin(permissions: ['index' => 'ROLE_USER'])]</code> still enforced</li>
+            <li><strong>Custom controller:</strong> Uses <code>AdminEntityVoter</code> to respect entity permissions</li>
         </ul>
+        <details style="margin-top: 1rem;">
+            <summary style="cursor: pointer; font-weight: bold;">How it works</summary>
+            <div style="margin-top: 0.5rem; padding: 1rem; background: #fff; border-radius: 4px;">
+                <p style="margin-top: 0;">The bundle's <code>AdminEntityVoter</code> checks permissions in this order:</p>
+                <ol style="margin-bottom: 0.5rem;">
+                    <li>Entity-specific permission from <code>#[Admin(permissions: [...])]</code></li>
+                    <li>Global <code>required_role</code> config (fallback)</li>
+                </ol>
+                <p style="margin-bottom: 0;">
+                    Custom controllers can leverage this via:<br>
+                    <code style="font-size: 0.85rem;">$this->denyAccessUnlessGranted(AdminEntityVoter::ADMIN_INDEX, $entityName);</code>
+                </p>
+            </div>
+        </details>
         {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-            <p style="margin-bottom: 0; padding: 1rem; background: #fff; border-radius: 4px;">
-                <strong>Try it:</strong> Login with <code>john@example.com</code> / <code>password</code> to access restricted entities
+            <p style="margin-bottom: 0; margin-top: 1rem; padding: 1rem; background: #fff; border-radius: 4px;">
+                <strong>Try it:</strong> Login with <code>user@example.com</code> / <code>password</code> to access User entity
             </p>
         {% else %}
-            <p style="margin-bottom: 0; padding: 1rem; background: #fff; border-radius: 4px;">
-                <strong>✅ Logged in</strong> - You can now access all User CRUD operations
+            <p style="margin-bottom: 0; margin-top: 1rem; padding: 1rem; background: #fff; border-radius: 4px;">
+                <strong>Logged in</strong> - You can now access User entity (requires <code>ROLE_USER</code>)
             </p>
         {% endif %}
     </div>

@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Bicycle;
 use App\Entity\Part;
 use App\Entity\User;
+use Kachnitel\AdminBundle\Security\AdminEntityVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -43,6 +44,11 @@ class AdminController extends AbstractController
         // Get short class name
         $reflection = new \ReflectionClass($entityClass);
         $entityShortClass = $reflection->getShortName();
+
+        // Enforce entity-level permissions using the bundle's voter
+        // This demonstrates how custom controllers can leverage AdminEntityVoter
+        // to respect #[Admin(permissions: [...])] even when required_role is null
+        $this->denyAccessUnlessGranted(AdminEntityVoter::ADMIN_INDEX, $entityShortClass);
 
         return $this->render('admin/entity.html.twig', [
             'entityClass' => $entityClass,

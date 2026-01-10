@@ -8,12 +8,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Kachnitel\AdminBundle\Attribute\Admin;
+use Kachnitel\AdminBundle\Attribute\ColumnFilter;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'bicycles')]
 #[Admin(
     label: 'Bike',
-    icon: 'pedal_bike'
+    icon: 'pedal_bike',
+    enableBatchActions: true,
+    itemsPerPage: 5,
+    sortBy: 'year',
+    sortDirection: 'DESC'
 )]
 class Bicycle
 {
@@ -33,6 +38,10 @@ class Bicycle
 
     #[ORM\Column(type: 'integer')]
     private int $year;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[ColumnFilter(type: 'daterange', label: 'Date Added', priority: 1)]
+    private \DateTimeImmutable $createdAt;
 
     /**
      * @var Collection<int, Part>
@@ -91,6 +100,17 @@ class Bicycle
     public function setYear(int $year): self
     {
         $this->year = $year;
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 

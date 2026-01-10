@@ -54,6 +54,76 @@
         </div>
     </div>
 
+    <div style="margin-bottom: 2rem; padding: 1.5rem; background: #e8f5e9; border-left: 4px solid #4caf50; border-radius: 4px;">
+        <h2 style="margin-top: 0; color: #2e7d32;">New in v0.2.0</h2>
+        <p style="margin-bottom: 1rem;">This demo showcases the latest features introduced in version 0.2.0:</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+            <div style="background: white; padding: 1rem; border-radius: 4px;">
+                <strong>DataSource Abstraction</strong>
+                <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+                    Display non-Doctrine data sources (APIs, logs, etc.) using the same admin UI
+                </p>
+                <code style="font-size: 0.8rem;">implements DataSourceInterface</code>
+                <br>
+                <a href="{{ path('app_admin_datasource_index', {dataSourceId: 'vendor-catalog'}) }}"
+                   style="color: #007bff; font-size: 0.85rem;">
+                    View Vendor Catalog demo →
+                </a>
+            </div>
+
+            <div style="background: white; padding: 1rem; border-radius: 4px;">
+                <strong>DateRangeFilter</strong>
+                <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+                    Filter by date ranges with from/to pickers
+                </p>
+                <code style="font-size: 0.8rem;">#[ColumnFilter(type: 'daterange')]</code>
+                <br>
+                <span style="color: #666; font-size: 0.85rem;">See User's createdAt filter</span>
+            </div>
+
+            <div style="background: white; padding: 1rem; border-radius: 4px;">
+                <strong>Batch Actions</strong>
+                <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+                    Multi-select with Shift/Ctrl+Click, bulk delete
+                </p>
+                <code style="font-size: 0.8rem;">enableBatchActions: true</code>
+                <br>
+                <span style="color: #666; font-size: 0.85rem;">Enabled on all entities</span>
+            </div>
+
+            <div style="background: white; padding: 1rem; border-radius: 4px;">
+                <strong>Advanced ColumnFilter</strong>
+                <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+                    Custom types, placeholders, operators, priority
+                </p>
+                <code style="font-size: 0.8rem;">#[ColumnFilter(operator: '>=')]</code>
+                <br>
+                <span style="color: #666; font-size: 0.85rem;">See Part's price filter (Min Price)</span>
+            </div>
+
+            <div style="background: white; padding: 1rem; border-radius: 4px;">
+                <strong>Pagination & Sorting</strong>
+                <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+                    Customizable items per page and default sort
+                </p>
+                <code style="font-size: 0.8rem;">itemsPerPage: 5, sortBy: 'year'</code>
+                <br>
+                <span style="color: #666; font-size: 0.85rem;">Each entity has different defaults</span>
+            </div>
+
+            <div style="background: white; padding: 1rem; border-radius: 4px;">
+                <strong>Bundle Dashboard</strong>
+                <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+                    Built-in dashboard with entity and data source cards
+                </p>
+                <a href="{{ path('app_admin_dashboard') }}" style="color: #007bff; font-size: 0.85rem;">
+                    View Dashboard →
+                </a>
+            </div>
+        </div>
+    </div>
+
     <div style="margin-bottom: 2rem; padding: 1.5rem; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
         <h3 style="margin-top: 0; color: #856404;">💡 Quick Start</h3>
         <p>Mark your entity with the <code>#[Admin]</code> attribute:</p>

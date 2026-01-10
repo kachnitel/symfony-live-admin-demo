@@ -63,6 +63,7 @@ class SecurityControllerTest extends WebTestCase
         $user->setEmail('test@example.com');
         $user->setName('Test User');
         $user->setActive(true);
+        $user->setCreatedAt(new \DateTimeImmutable());
         $user->setPassword($passwordHasher->hashPassword($user, 'testpassword'));
 
         $entityManager->persist($user);
@@ -111,6 +112,7 @@ class SecurityControllerTest extends WebTestCase
         $user->setEmail('admin@example.com');
         $user->setName('Admin User');
         $user->setActive(true);
+        $user->setCreatedAt(new \DateTimeImmutable());
         $user->setPassword($passwordHasher->hashPassword($user, 'adminpass'));
 
         $entityManager->persist($user);

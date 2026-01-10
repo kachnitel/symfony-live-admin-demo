@@ -44,6 +44,7 @@ class AdminControllerTest extends KernelTestCase
         self::$testUser->setEmail('test-component@example.com');
         self::$testUser->setName('Test Component User');
         self::$testUser->setActive(true);
+        self::$testUser->setCreatedAt(new \DateTimeImmutable());
         self::$testUser->setPassword($passwordHasher->hashPassword(self::$testUser, 'testpass'));
         $entityManager->persist(self::$testUser);
         $entityManager->flush();

@@ -6,9 +6,10 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Kachnitel\AdminBundle\Attribute\Admin;
+use Kachnitel\AdminBundle\Attribute\ColumnFilter;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
@@ -21,7 +22,11 @@ use Kachnitel\AdminBundle\Attribute\Admin;
         'create' => 'ROLE_USER',
         'delete' => 'ROLE_USER',
     ],
-    excludeColumns: ['password']
+    excludeColumns: ['password'],
+    enableBatchActions: true,
+    itemsPerPage: 10,
+    sortBy: 'createdAt',
+    sortDirection: 'DESC'
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -31,16 +36,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[ColumnFilter(placeholder: 'Filter by email', priority: 11)]
     private string $email;
 
     #[ORM\Column(type: 'string')]
     private string $password;
 
     #[ORM\Column(type: 'string', length: 100)]
+    #[ColumnFilter(placeholder: 'Search by name...', priority: 10)]
     private string $name;
 
     #[ORM\Column(type: 'boolean')]
+    #[ColumnFilter(type: 'boolean', label: 'Status', priority: 20)]
     private bool $active = true;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[ColumnFilter(type: 'daterange', priority: 1)]
+    private \DateTimeImmutable $createdAt;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    #[ColumnFilter(type: 'daterange', priority: 2)]
+    private ?\DateTimeImmutable $lastLoginAt = null;
 
     public function getId(): ?int
     {
@@ -119,5 +135,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // @deprecated, to be removed when upgrading to Symfony 8
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getLastLoginAt(): ?\DateTimeImmutable
+    {
+        return $this->lastLoginAt;
+    }
+
+    public function setLastLoginAt(?\DateTimeImmutable $lastLoginAt): self
+    {
+        $this->lastLoginAt = $lastLoginAt;
+        return $this;
     }
 }

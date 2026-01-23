@@ -27,9 +27,9 @@ export default class extends Controller {
 
     connect() {
         this.currentTheme = localStorage.getItem('theme') || 'system';
+        this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
         this.applyTheme();
 
-        this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
         this.boundSystemChange = this.handleSystemChange.bind(this);
         this.mediaQuery.addEventListener('change', this.boundSystemChange);
     }

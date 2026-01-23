@@ -1,3 +1,4 @@
-body {
-    background-color: skyblue;
-}
+@import "tailwindcss";
+
+/* Enable dark mode via class strategy (for three-way toggle) */
+@variant dark (&:where(.dark, .dark *));

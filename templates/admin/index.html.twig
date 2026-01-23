@@ -3,131 +3,135 @@
 {% block title %}Admin Bundle Demo{% endblock %}
 
 {% block body %}
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-        <h1>Kachnitel\AdminBundle Demo</h1>
-        <div>
+    {# Header with buttons #}
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Kachnitel\AdminBundle Demo</h1>
+        <div class="flex flex-wrap gap-2">
             <a href="https://github.com/kachnitel/FrdAdminBundle" target="_blank"
-               style="display: inline-block; padding: 0.5rem 1rem; background: #24292e; color: white; text-decoration: none; border-radius: 4px; margin-right: 0.5rem;">
-                📦 GitHub
+               class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded-md hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors text-sm">
+                GitHub
             </a>
             <a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/CHANGELOG.md" target="_blank"
-               style="display: inline-block; padding: 0.5rem 1rem; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; margin-right: 0.5rem;">
-                📝 Changelog
+               class="inline-flex items-center px-4 py-2 bg-gray-500 dark:bg-gray-600 text-white rounded-md hover:bg-gray-600 dark:hover:bg-gray-500 transition-colors text-sm">
+                Changelog
             </a>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <a href="{{ path('app_logout') }}"
-                   style="display: inline-block; padding: 0.5rem 1rem; background: #dc3545; color: white; text-decoration: none; border-radius: 4px;">
-                    🚪 Logout
+                   class="inline-flex items-center px-4 py-2 bg-red-600 dark:bg-red-500 text-white rounded-md hover:bg-red-700 dark:hover:bg-red-400 transition-colors text-sm">
+                    Logout
                 </a>
             {% else %}
                 <a href="{{ path('app_login') }}"
-                   style="display: inline-block; padding: 0.5rem 1rem; background: #28a745; color: white; text-decoration: none; border-radius: 4px;">
-                    🔑 Login
+                   class="inline-flex items-center px-4 py-2 bg-green-600 dark:bg-green-500 text-white rounded-md hover:bg-green-700 dark:hover:bg-green-400 transition-colors text-sm">
+                    Login
                 </a>
             {% endif %}
         </div>
     </div>
 
-    <div style="margin-bottom: 2rem; padding: 1.5rem; background: #f8f9fa; border-left: 4px solid #007bff; border-radius: 4px;">
-        <h2 style="margin-top: 0; color: #007bff;">About Kachnitel\AdminBundle</h2>
-        <p style="font-size: 1.1rem; line-height: 1.6;">
-            A Symfony bundle for rapid admin interface development using <strong>LiveComponents</strong>.
+    {# About section #}
+    <div class="mb-8 p-6 bg-gray-50 dark:bg-gray-800 border-l-4 border-blue-500 dark:border-blue-400 rounded-lg">
+        <h2 class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">About Kachnitel\AdminBundle</h2>
+        <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+            A Symfony bundle for rapid admin interface development using <strong class="text-gray-900 dark:text-white">LiveComponents</strong>.
             Build fully functional CRUD interfaces with just PHP attributes - no boilerplate code required.
         </p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-            <div>
-                <strong>🚀 Zero Boilerplate</strong><br>
-                <small>Just add <code>#[Admin]</code> to your entities</small>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+            <div class="text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">Zero Boilerplate</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Just add <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">#[Admin]</code> to your entities</span>
             </div>
-            <div>
-                <strong>🔐 Built-in Security</strong><br>
-                <small>Per-action permission control via attributes</small>
+            <div class="text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">Built-in Security</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Per-action permission control via attributes</span>
             </div>
-            <div>
-                <strong>🎨 Customizable</strong><br>
-                <small>Override templates, use custom forms</small>
+            <div class="text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">Customizable</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Override templates, use custom forms</span>
             </div>
-            <div>
-                <strong>⚡ LiveComponents</strong><br>
-                <small>Real-time filtering and interactions</small>
+            <div class="text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">LiveComponents</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Real-time filtering and interactions</span>
             </div>
         </div>
     </div>
 
-    <div style="margin-bottom: 2rem; padding: 1.5rem; background: #e8f5e9; border-left: 4px solid #4caf50; border-radius: 4px;">
-        <h2 style="margin-top: 0; color: #2e7d32;">New in v0.2.0</h2>
-        <p style="margin-bottom: 1rem;">This demo showcases the latest features introduced in version 0.2.0:</p>
+    {# New in v0.2.0 section #}
+    <div class="mb-8 p-6 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 dark:border-green-400 rounded-lg">
+        <h2 class="text-xl font-bold text-green-700 dark:text-green-400 mb-2">New in v0.2.0</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">This demo showcases the latest features introduced in version 0.2.0:</p>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-            <div style="background: white; padding: 1rem; border-radius: 4px;">
-                <strong>DataSource Abstraction</strong>
-                <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+                <strong class="text-gray-900 dark:text-white">DataSource Abstraction</strong>
+                <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
                     Display non-Doctrine data sources (APIs, logs, etc.) using the same admin UI
                 </p>
-                <code style="font-size: 0.8rem;">implements DataSourceInterface</code>
+                <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">implements DataSourceInterface</code>
                 <br>
                 <a href="{{ path('app_admin_datasource_index', {dataSourceId: 'vendor-catalog'}) }}"
-                   style="color: #007bff; font-size: 0.85rem;">
-                    View Vendor Catalog demo →
+                   class="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-2 inline-block">
+                    View Vendor Catalog demo &rarr;
                 </a>
             </div>
 
-            <div style="background: white; padding: 1rem; border-radius: 4px;">
-                <strong>DateRangeFilter</strong>
-                <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+                <strong class="text-gray-900 dark:text-white">DateRangeFilter</strong>
+                <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
                     Filter by date ranges with from/to pickers
                 </p>
-                <code style="font-size: 0.8rem;">#[ColumnFilter(type: 'daterange')]</code>
+                <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[ColumnFilter(type: 'daterange')]</code>
                 <br>
-                <span style="color: #666; font-size: 0.85rem;">See User's createdAt filter</span>
+                <span class="text-sm text-gray-500 dark:text-gray-500">See User's createdAt filter</span>
             </div>
 
-            <div style="background: white; padding: 1rem; border-radius: 4px;">
-                <strong>Batch Actions</strong>
-                <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+                <strong class="text-gray-900 dark:text-white">Batch Actions</strong>
+                <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
                     Multi-select with Shift/Ctrl+Click, bulk delete
                 </p>
-                <code style="font-size: 0.8rem;">enableBatchActions: true</code>
+                <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">enableBatchActions: true</code>
                 <br>
-                <span style="color: #666; font-size: 0.85rem;">Enabled on all entities</span>
+                <span class="text-sm text-gray-500 dark:text-gray-500">Enabled on all entities</span>
             </div>
 
-            <div style="background: white; padding: 1rem; border-radius: 4px;">
-                <strong>Advanced ColumnFilter</strong>
-                <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+                <strong class="text-gray-900 dark:text-white">Advanced ColumnFilter</strong>
+                <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
                     Custom types, placeholders, operators, priority
                 </p>
-                <code style="font-size: 0.8rem;">#[ColumnFilter(operator: '>=')]</code>
+                <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[ColumnFilter(operator: '>=')]</code>
                 <br>
-                <span style="color: #666; font-size: 0.85rem;">See Part's price filter (Min Price)</span>
+                <span class="text-sm text-gray-500 dark:text-gray-500">See Part's price filter (Min Price)</span>
             </div>
 
-            <div style="background: white; padding: 1rem; border-radius: 4px;">
-                <strong>Pagination & Sorting</strong>
-                <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+                <strong class="text-gray-900 dark:text-white">Pagination & Sorting</strong>
+                <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
                     Customizable items per page and default sort
                 </p>
-                <code style="font-size: 0.8rem;">itemsPerPage: 5, sortBy: 'year'</code>
+                <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">itemsPerPage: 5, sortBy: 'year'</code>
                 <br>
-                <span style="color: #666; font-size: 0.85rem;">Each entity has different defaults</span>
+                <span class="text-sm text-gray-500 dark:text-gray-500">Each entity has different defaults</span>
             </div>
 
-            <div style="background: white; padding: 1rem; border-radius: 4px;">
-                <strong>Bundle Dashboard</strong>
-                <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+                <strong class="text-gray-900 dark:text-white">Bundle Dashboard</strong>
+                <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
                     Built-in dashboard with entity and data source cards
                 </p>
-                <a href="{{ path('app_admin_dashboard') }}" style="color: #007bff; font-size: 0.85rem;">
-                    View Dashboard →
+                <a href="{{ path('app_admin_dashboard') }}" class="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                    View Dashboard &rarr;
                 </a>
             </div>
         </div>
     </div>
 
-    <div style="margin-bottom: 2rem; padding: 1.5rem; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
-        <h3 style="margin-top: 0; color: #856404;">💡 Quick Start</h3>
-        <p>Mark your entity with the <code>#[Admin]</code> attribute:</p>
-        <pre style="background: #fff; padding: 1rem; border-radius: 4px; overflow-x: auto;"><code>use Kachnitel\AdminBundle\Attribute\Admin;
+    {# Quick Start section #}
+    <div class="mb-8 p-6 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 dark:border-yellow-400 rounded-lg">
+        <h3 class="text-lg font-bold text-yellow-700 dark:text-yellow-400 mb-2">Quick Start</h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-2">Mark your entity with the <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">#[Admin]</code> attribute:</p>
+        <pre class="bg-white dark:bg-gray-800 p-4 rounded-lg overflow-x-auto text-sm"><code class="text-gray-800 dark:text-gray-200">use Kachnitel\AdminBundle\Attribute\Admin;
 
 #[Admin(
     icon: 'person',
@@ -137,157 +141,162 @@
     ]
 )]
 class User { ... }</code></pre>
-        <p style="margin-bottom: 0;">
-            <a href="https://github.com/kachnitel/FrdAdminBundle#usage" target="_blank" style="color: #007bff;">
-                📖 View full documentation →
+        <p class="mt-3">
+            <a href="https://github.com/kachnitel/FrdAdminBundle#usage" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">
+                View full documentation &rarr;
             </a>
         </p>
     </div>
 
-    <div style="margin-bottom: 2rem; padding: 1.5rem; background: #d1ecf1; border-left: 4px solid #0c5460; border-radius: 4px;">
-        <h3 style="margin-top: 0; color: #0c5460;">Two Implementation Approaches</h3>
-        <p>This demo showcases two ways to use the bundle:</p>
-        <ol style="margin-bottom: 0;">
+    {# Two approaches section #}
+    <div class="mb-8 p-6 bg-cyan-50 dark:bg-cyan-900/20 border-l-4 border-cyan-600 dark:border-cyan-400 rounded-lg">
+        <h3 class="text-lg font-bold text-cyan-700 dark:text-cyan-400 mb-2">Two Implementation Approaches</h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-2">This demo showcases two ways to use the bundle:</p>
+        <ol class="list-decimal list-inside text-gray-700 dark:text-gray-300 space-y-2">
             <li>
-                <strong>GenericAdminController</strong> - Zero-code admin using the bundle's built-in routes
-                <br><small>→ Click "Bundle Admin" in navigation to see it in action</small>
+                <strong class="text-gray-900 dark:text-white">GenericAdminController</strong> - Zero-code admin using the bundle's built-in routes
+                <br><span class="text-sm text-gray-500 dark:text-gray-400 ml-5">&rarr; Click "Bundle Admin" in navigation to see it in action</span>
             </li>
             <li>
-                <strong>Custom Controller</strong> - Use bundle components in your own controllers
-                <br><small>→ See examples below</small>
+                <strong class="text-gray-900 dark:text-white">Custom Controller</strong> - Use bundle components in your own controllers
+                <br><span class="text-sm text-gray-500 dark:text-gray-400 ml-5">&rarr; See examples below</span>
             </li>
         </ol>
     </div>
 
-    <h2>Custom Controller Examples</h2>
-    <p style="color: #666; margin-bottom: 1.5rem;">
+    {# Custom Controller Examples #}
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Custom Controller Examples</h2>
+    <p class="text-gray-600 dark:text-gray-400 mb-6">
         These demonstrate using the bundle's components with custom routes and controllers:
     </p>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {% for entity in entities %}
-            <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                <h3 style="margin-top: 0; color: #007bff;">{{ entity.name }}s</h3>
-                <p style="color: #666; font-size: 0.9rem;">
-                    Custom route: <code>/custom-admin/{{ entity.name|lower }}</code>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow dark:shadow-gray-900/50 hover:shadow-lg dark:hover:shadow-gray-900/70 transition-shadow">
+                <h3 class="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2">{{ entity.name }}s</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">
+                    Custom route: <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">/custom-admin/{{ entity.name|lower }}</code>
                 </p>
                 {% if entity.name == 'User' %}
-                    <p style="color: {% if is_granted('IS_AUTHENTICATED_FULLY') %}#28a745{% else %}#dc3545{% endif %}; font-size: 0.85rem; margin-top: 0.5rem;">
+                    <p class="text-sm mt-2 {{ is_granted('IS_AUTHENTICATED_FULLY') ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            Requires <code>ROLE_USER</code>
+                            Requires <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">ROLE_USER</code>
                         {% else %}
-                            🔒 Requires <code>ROLE_USER</code> (login to access)
+                            Requires <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">ROLE_USER</code> (login to access)
                         {% endif %}
                     </p>
                 {% else %}
-                    <p style="color: #6c757d; font-size: 0.85rem; margin-top: 0.5rem;">
+                    <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">
                         No permission required (public)
                     </p>
                 {% endif %}
                 <a href="{{ path(entity.route, {entity: entity.name|lower}) }}"
-                   style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">
+                   class="inline-block mt-4 px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-400 transition-colors text-sm">
                     View {{ entity.name }}s
                 </a>
             </div>
         {% endfor %}
     </div>
 
-    <div style="margin-top: 3rem; padding: 1.5rem; background: #e7f3ff; border-left: 4px solid #2196F3; border-radius: 4px;">
-        <h3 style="margin-top: 0; color: #1976D2;">🧩 Core Components</h3>
-        <p>The bundle provides reusable Symfony UX components:</p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-            <div>
-                <strong>EntityList Component</strong><br>
-                <small>
+    {# Core Components section #}
+    <div class="mb-8 p-6 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 dark:border-blue-400 rounded-lg">
+        <h3 class="text-lg font-bold text-blue-700 dark:text-blue-400 mb-2">Core Components</h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">The bundle provides reusable Symfony UX components:</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">EntityList Component</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">
                     Live-searchable entity lists with filtering
-                    <br><a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/src/Twig/Components/EntityList.php" target="_blank" style="color: #007bff; font-size: 0.85rem;">View code →</a>
-                </small>
+                    <br><a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/src/Twig/Components/EntityList.php" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">View code &rarr;</a>
+                </span>
             </div>
         </div>
     </div>
 
-    <div style="margin-top: 2rem; padding: 1.5rem; background: #fff; border: 1px solid #dee2e6; border-radius: 8px;">
-        <h3 style="margin-top: 0;">🎨 Template Override System</h3>
-        <p>Customize how any property is rendered by placing templates in your app:</p>
-        <pre style="background: #f8f9fa; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.85rem;"><code>templates/bundles/KachnitelAdminBundle/types/
+    {# Template Override System section #}
+    <div class="mb-8 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow dark:shadow-gray-900/50">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">Template Override System</h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-3">Customize how any property is rendered by placing templates in your app:</p>
+        <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm mb-4"><code class="text-gray-800 dark:text-gray-200">templates/bundles/KachnitelAdminBundle/types/
 ├── boolean/_preview.html.twig    # Custom boolean rendering
 ├── User/email/_preview.html.twig  # User-specific email field
 └── _preview.html.twig             # Default fallback</code></pre>
-        <p style="margin-bottom: 0;">
+        <p class="text-gray-700 dark:text-gray-300 mb-2">
             Active overrides in this demo:
         </p>
-        {# TODO: Add links to code #}
-        <ul style="margin-bottom: 0;">
-            <li><strong>Boolean fields</strong> - Colored badges (✓ Yes / ✗ No)</li>
-            <li><strong>User email</strong> - Clickable mailto link with icon</li>
+        <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1">
+            <li><strong class="text-gray-900 dark:text-white">Boolean fields</strong> - Colored badges (Yes / No)</li>
+            <li><strong class="text-gray-900 dark:text-white">User email</strong> - Clickable mailto link with icon</li>
         </ul>
     </div>
 
-    <div style="margin-top: 2rem; padding: 1.5rem; background: #d4edda; border-left: 4px solid #28a745; border-radius: 4px;">
-        <h3 style="margin-top: 0; color: #155724;">🔐 Security Features</h3>
-        <p>This demo showcases two-level permission control:</p>
-        <ul>
-            <li><strong>Global setting:</strong> <code>required_role: null</code> disables bundle-wide authentication</li>
-            <li><strong>Entity-level:</strong> <code>#[Admin(permissions: ['index' => 'ROLE_USER'])]</code> still enforced</li>
-            <li><strong>Custom controller:</strong> Uses <code>AdminEntityVoter</code> to respect entity permissions</li>
+    {# Security Features section #}
+    <div class="mb-8 p-6 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 dark:border-green-400 rounded-lg">
+        <h3 class="text-lg font-bold text-green-700 dark:text-green-400 mb-2">Security Features</h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-2">This demo showcases two-level permission control:</p>
+        <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1 mb-4">
+            <li><strong class="text-gray-900 dark:text-white">Global setting:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">required_role: null</code> disables bundle-wide authentication</li>
+            <li><strong class="text-gray-900 dark:text-white">Entity-level:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">#[Admin(permissions: ['index' => 'ROLE_USER'])]</code> still enforced</li>
+            <li><strong class="text-gray-900 dark:text-white">Custom controller:</strong> Uses <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">AdminEntityVoter</code> to respect entity permissions</li>
         </ul>
-        <details style="margin-top: 1rem;">
-            <summary style="cursor: pointer; font-weight: bold;">How it works</summary>
-            <div style="margin-top: 0.5rem; padding: 1rem; background: #fff; border-radius: 4px;">
-                <p style="margin-top: 0;">The bundle's <code>AdminEntityVoter</code> checks permissions in this order:</p>
-                <ol style="margin-bottom: 0.5rem;">
-                    <li>Entity-specific permission from <code>#[Admin(permissions: [...])]</code></li>
-                    <li>Global <code>required_role</code> config (fallback)</li>
+        <details class="mt-4">
+            <summary class="cursor-pointer font-semibold text-gray-900 dark:text-white">How it works</summary>
+            <div class="mt-3 p-4 bg-white dark:bg-gray-800 rounded-lg">
+                <p class="text-gray-700 dark:text-gray-300 mb-2">The bundle's <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">AdminEntityVoter</code> checks permissions in this order:</p>
+                <ol class="list-decimal list-inside text-gray-700 dark:text-gray-300 space-y-1 mb-2">
+                    <li>Entity-specific permission from <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">#[Admin(permissions: [...])]</code></li>
+                    <li>Global <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">required_role</code> config (fallback)</li>
                 </ol>
-                <p style="margin-bottom: 0;">
+                <p class="text-gray-700 dark:text-gray-300">
                     Custom controllers can leverage this via:<br>
-                    <code style="font-size: 0.85rem;">$this->denyAccessUnlessGranted(AdminEntityVoter::ADMIN_INDEX, $entityName);</code>
+                    <code class="text-sm bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded block mt-1 overflow-x-auto">$this->denyAccessUnlessGranted(AdminEntityVoter::ADMIN_INDEX, $entityName);</code>
                 </p>
             </div>
         </details>
         {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-            <p style="margin-bottom: 0; margin-top: 1rem; padding: 1rem; background: #fff; border-radius: 4px;">
-                <strong>Try it:</strong> Login with <code>user@example.com</code> / <code>password</code> to access User entity
+            <p class="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">Try it:</strong> Login with <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">user@example.com</code> / <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">password</code> to access User entity
             </p>
         {% else %}
-            <p style="margin-bottom: 0; margin-top: 1rem; padding: 1rem; background: #fff; border-radius: 4px;">
-                <strong>Logged in</strong> - You can now access User entity (requires <code>ROLE_USER</code>)
+            <p class="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">Logged in</strong> - You can now access User entity (requires <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">ROLE_USER</code>)
             </p>
         {% endif %}
     </div>
 
-    <div style="margin-top: 2rem; padding: 1.5rem; background: #e9ecef; border-radius: 8px;">
-        <h3>📚 Documentation & Resources</h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+    {# Documentation & Resources section #}
+    <div class="mb-8 p-6 bg-gray-100 dark:bg-gray-800 rounded-lg">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Documentation & Resources</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <a href="https://github.com/kachnitel/FrdAdminBundle" target="_blank"
-               style="display: block; padding: 1rem; background: #fff; border-radius: 4px; text-decoration: none; color: #212529; border: 1px solid #dee2e6;">
-                <strong style="color: #007bff;">📦 GitHub Repository</strong><br>
-                <small>Source code, issues, and PRs</small>
+               class="block p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow">
+                <strong class="text-blue-600 dark:text-blue-400">GitHub Repository</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Source code, issues, and PRs</span>
             </a>
             <a href="https://github.com/kachnitel/FrdAdminBundle#readme" target="_blank"
-               style="display: block; padding: 1rem; background: #fff; border-radius: 4px; text-decoration: none; color: #212529; border: 1px solid #dee2e6;">
-                <strong style="color: #007bff;">📖 README</strong><br>
-                <small>Installation and quick start</small>
+               class="block p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow">
+                <strong class="text-blue-600 dark:text-blue-400">README</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Installation and quick start</span>
             </a>
             <a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/CHANGELOG.md" target="_blank"
-               style="display: block; padding: 1rem; background: #fff; border-radius: 4px; text-decoration: none; color: #212529; border: 1px solid #dee2e6;">
-                <strong style="color: #007bff;">📝 Changelog</strong><br>
-                <small>Version history and updates</small>
+               class="block p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow">
+                <strong class="text-blue-600 dark:text-blue-400">Changelog</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Version history and updates</span>
             </a>
             <a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/docs/CONFIGURATION.md" target="_blank"
-               style="display: block; padding: 1rem; background: #fff; border-radius: 4px; text-decoration: none; color: #212529; border: 1px solid #dee2e6;">
-                <strong style="color: #007bff;">⚙️ Configuration</strong><br>
-                <small>Bundle configuration options</small>
+               class="block p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow">
+                <strong class="text-blue-600 dark:text-blue-400">Configuration</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Bundle configuration options</span>
             </a>
             <a href="https://symfony.com/bundles/ux-live-component/current/index.html" target="_blank"
-               style="display: block; padding: 1rem; background: #fff; border-radius: 4px; text-decoration: none; color: #212529; border: 1px solid #dee2e6;">
-                <strong style="color: #007bff;">⚡ UX LiveComponent Docs</strong><br>
-                <small>Learn about LiveComponents</small>
+               class="block p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow">
+                <strong class="text-blue-600 dark:text-blue-400">UX LiveComponent Docs</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Learn about LiveComponents</span>
             </a>
             <a href="https://github.com/kachnitel/FrdAdminBundle/tree/master/src/Twig/Components" target="_blank"
-               style="display: block; padding: 1rem; background: #fff; border-radius: 4px; text-decoration: none; color: #212529; border: 1px solid #dee2e6;">
-                <strong style="color: #007bff;">🧩 Component Source</strong><br>
-                <small>Browse component implementations</small>
+               class="block p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow">
+                <strong class="text-blue-600 dark:text-blue-400">Component Source</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Browse component implementations</span>
             </a>
         </div>
     </div>

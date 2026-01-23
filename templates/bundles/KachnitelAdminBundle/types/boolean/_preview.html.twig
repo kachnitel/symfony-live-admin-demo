@@ -1,14 +1,14 @@
 {# Custom boolean rendering with colored badges #}
 {% if value is same as(true) %}
-    <span style="display: inline-block; padding: 0.25rem 0.5rem; background: #28a745; color: white; border-radius: 4px; font-size: 0.875rem;">
-        ✓ Yes
+    <span class="inline-block px-2 py-1 bg-green-600 dark:bg-green-500 text-white text-sm rounded">
+        Yes
     </span>
 {% elseif value is same as(false) %}
-    <span style="display: inline-block; padding: 0.25rem 0.5rem; background: #dc3545; color: white; border-radius: 4px; font-size: 0.875rem;">
-        ✗ No
+    <span class="inline-block px-2 py-1 bg-red-600 dark:bg-red-500 text-white text-sm rounded">
+        No
     </span>
 {% else %}
-    <span style="display: inline-block; padding: 0.25rem 0.5rem; background: #6c757d; color: white; border-radius: 4px; font-size: 0.875rem;">
+    <span class="inline-block px-2 py-1 bg-gray-500 dark:bg-gray-600 text-white text-sm rounded">
         Unknown
     </span>
 {% endif %}

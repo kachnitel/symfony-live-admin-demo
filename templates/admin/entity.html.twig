@@ -3,7 +3,7 @@
 {% block title %}{{ entityShortClass }} - Admin{% endblock %}
 
 {% block body %}
-    <h1>{{ entityShortClass }}</h1>
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">{{ entityShortClass }}</h1>
 
     <twig:K:Admin:EntityList
         entityClass="{{ entityClass }}"

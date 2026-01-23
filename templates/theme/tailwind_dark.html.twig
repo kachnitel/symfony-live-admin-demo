@@ -1,0 +1,125 @@
+{#
+ # Custom Tailwind theme with dark mode support.
+ # Extends @KachnitelAdmin/theme/tailwind.html.twig patterns with dark: variants.
+ #
+ # Configure in kachnitel_admin.yaml:
+ #   kachnitel_admin:
+ #       theme: 'theme/tailwind_dark.html.twig'
+ #}
+
+{# Buttons - with dark mode variants #}
+{% macro btn_primary() %}inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 dark:hover:bg-blue-400 focus:bg-blue-700 dark:focus:bg-blue-400 active:bg-blue-900 dark:active:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition ease-in-out duration-150{% endmacro %}
+
+{% macro btn_secondary() %}inline-flex items-center px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-200 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition ease-in-out duration-150{% endmacro %}
+
+{% macro btn_danger() %}inline-flex items-center px-4 py-2 bg-red-600 dark:bg-red-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 dark:hover:bg-red-400 focus:bg-red-700 dark:focus:bg-red-400 active:bg-red-900 dark:active:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition ease-in-out duration-150{% endmacro %}
+
+{% macro btn_outline_primary() %}inline-flex items-center px-4 py-2 bg-transparent border border-blue-600 dark:border-blue-400 rounded-md font-semibold text-xs text-blue-600 dark:text-blue-400 uppercase tracking-widest hover:bg-blue-50 dark:hover:bg-blue-900/30 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition ease-in-out duration-150{% endmacro %}
+
+{% macro btn_outline_secondary() %}inline-flex items-center px-4 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition ease-in-out duration-150{% endmacro %}
+
+{% macro btn_outline_info() %}inline-flex items-center px-4 py-2 bg-transparent border border-cyan-500 dark:border-cyan-400 rounded-md font-semibold text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest hover:bg-cyan-50 dark:hover:bg-cyan-900/30 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition ease-in-out duration-150{% endmacro %}
+
+{% macro btn_link() %}text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline focus:outline-none{% endmacro %}
+
+{% macro btn_close() %}text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none{% endmacro %}
+
+{% macro btn_sm() %}text-xs px-2 py-1{% endmacro %}
+
+{# Forms - with dark mode variants #}
+{% macro form_input() %}block w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400{% endmacro %}
+
+{% macro form_input_sm() %}block w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400 text-sm py-1{% endmacro %}
+
+{% macro form_select() %}form-select bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600{% endmacro %}
+
+{% macro form_select_sm() %}block rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400 text-sm py-1{% endmacro %}
+
+{% macro form_checkbox() %}h-4 w-4 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400{% endmacro %}
+
+{% macro form_label() %}block text-sm font-medium text-gray-700 dark:text-gray-300{% endmacro %}
+
+{% macro form_label_sm() %}block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1{% endmacro %}
+
+{# Tables - with dark mode variants #}
+{% macro table() %}min-w-full divide-y divide-gray-200 dark:divide-gray-700{% endmacro %}
+
+{% macro table_simple() %}min-w-full{% endmacro %}
+
+{# Pagination - with dark mode variants #}
+{% macro pagination() %}inline-flex -space-x-px rounded-md shadow-sm{% endmacro %}
+
+{% macro page_item() %}{% endmacro %}
+
+{% macro page_item_disabled() %}opacity-50 cursor-not-allowed{% endmacro %}
+
+{% macro page_link() %}relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400{% endmacro %}
+
+{# Layout #}
+{% macro container() %}container mx-auto px-4{% endmacro %}
+
+{% macro flex_row() %}flex{% endmacro %}
+
+{% macro flex_center() %}flex items-center{% endmacro %}
+
+{% macro flex_between() %}flex justify-between items-center{% endmacro %}
+
+{% macro gap_sm() %}gap-1{% endmacro %}
+
+{% macro gap_md() %}gap-2{% endmacro %}
+
+{% macro gap_lg() %}gap-3{% endmacro %}
+
+{% macro inline_block() %}inline-block{% endmacro %}
+
+{% macro d_inline() %}inline{% endmacro %}
+
+{% macro float_end() %}float-right{% endmacro %}
+
+{# Cards - with dark mode variants #}
+{% macro card() %}bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-900/50{% endmacro %}
+
+{% macro card_hover() %}bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-900/50 hover:shadow-lg dark:hover:shadow-gray-900/70 transition-shadow duration-200{% endmacro %}
+
+{% macro card_info() %}bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-900/50 hover:shadow-lg dark:hover:shadow-gray-900/70 transition-shadow duration-200 border-l-4 border-cyan-500 dark:border-cyan-400{% endmacro %}
+
+{% macro card_body() %}p-6 text-center flex flex-col justify-center{% endmacro %}
+
+{% macro card_title() %}text-lg font-medium text-gray-600 dark:text-gray-300 mb-3{% endmacro %}
+
+{# Alerts - with dark mode variants #}
+{% macro alert_warning() %}flex items-center p-4 bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-400 dark:border-yellow-500 text-yellow-700 dark:text-yellow-300{% endmacro %}
+
+{# Text - with dark mode variants #}
+{% macro text_muted() %}text-gray-500 dark:text-gray-400{% endmacro %}
+
+{% macro text_center() %}text-center{% endmacro %}
+
+{% macro text_no_decoration() %}no-underline{% endmacro %}
+
+{# Spacing #}
+{% macro mb_0() %}mb-0{% endmacro %}
+
+{% macro mb_1() %}mb-1{% endmacro %}
+
+{% macro mb_3() %}mb-3{% endmacro %}
+
+{% macro mb_5() %}mb-8{% endmacro %}
+
+{% macro mt_3() %}mt-3{% endmacro %}
+
+{% macro me_2() %}mr-2{% endmacro %}
+
+{% macro py_4() %}py-4{% endmacro %}
+
+{# Grid #}
+{% macro row() %}grid grid-cols-1 gap-4{% endmacro %}
+
+{% macro row_spaced() %}grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8{% endmacro %}
+
+{% macro col_card() %}{% endmacro %}
+
+{% macro col_full() %}col-span-full{% endmacro %}
+
+{# Heading - with dark mode variants #}
+{% macro h4() %}text-xl font-semibold mb-3 text-gray-900 dark:text-gray-100{% endmacro %}

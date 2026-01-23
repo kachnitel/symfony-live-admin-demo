@@ -1,3 +1,4 @@
 kachnitel_admin:
     base_layout: 'base.html.twig'
     required_role: null  # For demo purposes, no security (can also use ~ or leave empty)
+    theme: 'theme/tailwind_dark.html.twig'

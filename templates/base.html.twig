@@ -1,71 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Admin Demo{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-            <style>
-                body {
-                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    background: #f5f5f5;
+
+        {# Prevent flash of wrong theme on page load #}
+        <script>
+            (function() {
+                var theme = localStorage.getItem('theme') || 'system';
+                var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (theme === 'dark' || (theme === 'system' && prefersDark)) {
+                    document.documentElement.classList.add('dark');
                 }
-                .container {
-                    max-width: 1200px;
-                    margin: 0 auto;
-                    padding: 20px;
-                }
-                nav {
-                    background: #333;
-                    color: white;
-                    padding: 1rem 0;
-                    margin-bottom: 2rem;
-                }
-                nav .nav-container {
-                    max-width: 1200px;
-                    margin: 0 auto;
-                    padding: 0 20px;
-                    display: flex;
-                    gap: 2rem;
-                    align-items: center;
-                }
-                nav a {
-                    color: white;
-                    text-decoration: none;
-                    padding: 0.5rem 1rem;
-                    border-radius: 4px;
-                    transition: background 0.2s;
-                }
-                nav a:hover {
-                    background: #555;
-                }
-                nav a.active {
-                    background: #007bff;
-                }
-                h1 {
-                    color: #333;
-                    margin-bottom: 1.5rem;
-                }
-            </style>
-        {% endblock %}
+            })();
+        </script>
+
+        {% block stylesheets %}{% endblock %}
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
-        <nav>
-            <div class="nav-container">
-                <a href="{{ path('admin_home') }}" {% if app.request.get('_route') == 'admin_home' %}class="active"{% endif %}>Custom Home</a>
-                <a href="{{ path('app_admin_dashboard') }}" {% if app.request.get('_route') starts with 'app_admin' %}class="active"{% endif %}>Bundle Admin</a>
+    <body class="bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-200">
+        <nav class="bg-gray-800 dark:bg-gray-950 text-white py-4 mb-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <div class="flex gap-2 sm:gap-4 items-center">
+                    <a href="{{ path('admin_home') }}"
+                       class="px-3 sm:px-4 py-2 rounded-md transition-colors duration-150 hover:bg-gray-700 dark:hover:bg-gray-800 text-sm sm:text-base {{ app.request.get('_route') == 'admin_home' ? 'bg-blue-600 dark:bg-blue-500' : '' }}">
+                        Custom Home
+                    </a>
+                    <a href="{{ path('app_admin_dashboard') }}"
+                       class="px-3 sm:px-4 py-2 rounded-md transition-colors duration-150 hover:bg-gray-700 dark:hover:bg-gray-800 text-sm sm:text-base {{ app.request.get('_route') starts with 'app_admin' ? 'bg-blue-600 dark:bg-blue-500' : '' }}">
+                        Bundle Admin
+                    </a>
+                </div>
+
+                {# Theme Toggle Button #}
+                <div data-controller="theme">
+                    <button data-theme-target="button"
+                            data-action="click->theme#toggle"
+                            class="flex items-center gap-2 px-3 py-2 rounded-md bg-gray-700 dark:bg-gray-800 hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-150"
+                            title="Toggle theme">
+                        <span data-theme-target="icon">💻</span>
+                        <span data-theme-target="label" class="text-sm hidden sm:inline">System</span>
+                    </button>
+                </div>
             </div>
         </nav>
-        <div class="container">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {% if block('headerTitle') is defined or block('headerButtons') is defined %}
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <div>
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-2xl font-bold text-gray-900 dark:text-gray-100">
                         {% block headerTitle %}{% endblock %}
                     </div>
                     <div>

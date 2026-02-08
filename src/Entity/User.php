@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Kachnitel\AdminBundle\Attribute\Admin;
 use Kachnitel\AdminBundle\Attribute\ColumnFilter;
+use Kachnitel\AdminBundle\Attribute\ColumnPermission;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -24,6 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
     ],
     excludeColumns: ['password'],
     enableBatchActions: true,
+    enableColumnVisibility: true,
     itemsPerPage: 10,
     sortBy: 'createdAt',
     sortDirection: 'DESC'
@@ -56,6 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     #[ColumnFilter(type: 'daterange', priority: 2)]
+    #[ColumnPermission('ROLE_ADMIN')]
     private ?\DateTimeImmutable $lastLoginAt = null;
 
     public function getId(): ?int

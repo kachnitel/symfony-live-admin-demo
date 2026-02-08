@@ -90,74 +90,107 @@
         {% endfor %}
     </div>
 
-    {# New in v0.2.0 section #}
-    <div class="mb-8 p-6 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 dark:border-green-400 rounded-lg">
-        <h2 class="text-xl font-bold text-green-700 dark:text-green-400 mb-2">New in v0.2.0</h2>
-        <p class="text-gray-700 dark:text-gray-300 mb-4">This demo showcases the latest features introduced in version 0.2.0:</p>
+    {# Features Showcased #}
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Features Showcased</h2>
+    <p class="text-gray-600 dark:text-gray-400 mb-6">
+        This demo exercises the bundle's key features:
+    </p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
-                <strong class="text-gray-900 dark:text-white">DataSource Abstraction</strong>
-                <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
-                    Display non-Doctrine data sources (APIs, logs, etc.) using the same admin UI
-                </p>
-                <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">implements DataSourceInterface</code>
-                <br>
-                <a href="{{ path('app_admin_datasource_index', {dataSourceId: 'vendor-catalog'}) }}"
-                   class="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-2 inline-block">
-                    View Vendor Catalog demo &rarr;
-                </a>
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+            <strong class="text-gray-900 dark:text-white">Column Permissions</strong>
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
+                Role-based column visibility using Symfony's security voter
+            </p>
+            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[ColumnPermission('ROLE_ADMIN')]</code>
+            <br>
+            <span class="text-sm text-gray-500 dark:text-gray-500">User's lastLoginAt hidden for ROLE_USER</span>
+        </div>
 
-            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
-                <strong class="text-gray-900 dark:text-white">DateRangeFilter</strong>
-                <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
-                    Filter by date ranges with from/to pickers
-                </p>
-                <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[ColumnFilter(type: 'daterange')]</code>
-                <br>
-                <span class="text-sm text-gray-500 dark:text-gray-500">See User's createdAt filter</span>
-            </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+            <strong class="text-gray-900 dark:text-white">Column Visibility Toggle</strong>
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
+                Users can show/hide columns per entity, stored in session
+            </p>
+            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">enableColumnVisibility: true</code>
+            <br>
+            <span class="text-sm text-gray-500 dark:text-gray-500">Enabled on all entities</span>
+        </div>
 
-            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
-                <strong class="text-gray-900 dark:text-white">Batch Actions</strong>
-                <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
-                    Multi-select with Shift/Ctrl+Click, bulk delete
-                </p>
-                <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">enableBatchActions: true</code>
-                <br>
-                <span class="text-sm text-gray-500 dark:text-gray-500">Enabled on all entities</span>
-            </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+            <strong class="text-gray-900 dark:text-white">Collection Filtering</strong>
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
+                Filter by OneToMany/ManyToMany relations using EXISTS subqueries
+            </p>
+            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[ColumnFilter] on Collection</code>
+            <br>
+            <span class="text-sm text-gray-500 dark:text-gray-500">See Bicycle's parts filter</span>
+        </div>
 
-            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
-                <strong class="text-gray-900 dark:text-white">Advanced ColumnFilter</strong>
-                <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
-                    Custom types, placeholders, operators, priority
-                </p>
-                <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[ColumnFilter(operator: '>=')]</code>
-                <br>
-                <span class="text-sm text-gray-500 dark:text-gray-500">See Part's price filter (Min Price)</span>
-            </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+            <strong class="text-gray-900 dark:text-white">Entity URL Functions</strong>
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
+                Generate admin panel URLs for related entities in Twig
+            </p>
+            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">admin_entity_url() / admin_collection_url()</code>
+            <br>
+            <span class="text-sm text-gray-500 dark:text-gray-500">See Part's bike link, Bicycle's parts count</span>
+        </div>
 
-            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
-                <strong class="text-gray-900 dark:text-white">Pagination & Sorting</strong>
-                <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
-                    Customizable items per page and default sort
-                </p>
-                <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">itemsPerPage: 5, sortBy: 'year'</code>
-                <br>
-                <span class="text-sm text-gray-500 dark:text-gray-500">Each entity has different defaults</span>
-            </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+            <strong class="text-gray-900 dark:text-white">Multi-Select Enum Filter</strong>
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
+                Select multiple enum values with IN operator
+            </p>
+            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[ColumnFilter(multiple: true)]</code>
+            <br>
+            <a href="{{ path('app_admin_datasource_index', {dataSourceId: 'vendor-catalog'}) }}"
+               class="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-1 inline-block">
+                See Vendor Catalog's category &rarr;
+            </a>
+        </div>
 
-            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
-                <strong class="text-gray-900 dark:text-white">Bundle Dashboard</strong>
-                <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
-                    Built-in dashboard with entity and data source cards
-                </p>
-                <a href="{{ path('app_admin_dashboard') }}" class="text-blue-600 dark:text-blue-400 hover:underline text-sm">
-                    View Dashboard &rarr;
-                </a>
-            </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+            <strong class="text-gray-900 dark:text-white">DataSource Abstraction</strong>
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
+                Display non-Doctrine data sources (APIs, logs, etc.) using the same admin UI
+            </p>
+            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">implements DataSourceInterface</code>
+            <br>
+            <a href="{{ path('app_admin_datasource_index', {dataSourceId: 'vendor-catalog'}) }}"
+               class="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-2 inline-block">
+                View Vendor Catalog demo &rarr;
+            </a>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+            <strong class="text-gray-900 dark:text-white">Advanced Filters</strong>
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
+                Date ranges, boolean, number operators, relation search
+            </p>
+            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[ColumnFilter(type: 'daterange')]</code>
+            <br>
+            <span class="text-sm text-gray-500 dark:text-gray-500">See Part's price (>=) and User's createdAt</span>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+            <strong class="text-gray-900 dark:text-white">Batch Actions</strong>
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
+                Multi-select with Shift/Ctrl+Click, bulk delete
+            </p>
+            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">enableBatchActions: true</code>
+            <br>
+            <span class="text-sm text-gray-500 dark:text-gray-500">Enabled on all entities</span>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+            <strong class="text-gray-900 dark:text-white">Bundle Dashboard</strong>
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
+                Built-in dashboard with entity and data source cards
+            </p>
+            <a href="{{ path('app_admin_dashboard') }}" class="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                View Dashboard &rarr;
+            </a>
         </div>
     </div>
 
@@ -218,25 +251,29 @@ class User { ... }</code></pre>
         <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">Template Override System</h3>
         <p class="text-gray-700 dark:text-gray-300 mb-3">Customize how any property is rendered by placing templates in your app:</p>
         <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm mb-4"><code class="text-gray-800 dark:text-gray-200">templates/bundles/KachnitelAdminBundle/types/
-├── boolean/_preview.html.twig    # Custom boolean rendering
-├── User/email/_preview.html.twig  # User-specific email field
-└── _preview.html.twig             # Default fallback</code></pre>
+├── boolean/_preview.html.twig          # Custom boolean rendering
+├── App/Entity/User/email.html.twig     # User-specific email field
+├── App/Entity/Part/bicycle.html.twig   # Clickable bike link (admin_entity_url)
+└── App/Entity/Bicycle/parts.html.twig  # Parts count link (admin_collection_url)</code></pre>
         <p class="text-gray-700 dark:text-gray-300 mb-2">
             Active overrides in this demo:
         </p>
         <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1">
             <li><strong class="text-gray-900 dark:text-white">Boolean fields</strong> - Colored badges (Yes / No)</li>
-            <li><strong class="text-gray-900 dark:text-white">User email</strong> - Clickable mailto link with icon</li>
+            <li><strong class="text-gray-900 dark:text-white">User email</strong> - Clickable mailto link</li>
+            <li><strong class="text-gray-900 dark:text-white">Part's bicycle</strong> - Clickable link via <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-xs">admin_entity_url()</code></li>
+            <li><strong class="text-gray-900 dark:text-white">Bicycle's parts</strong> - Count with link via <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-xs">admin_collection_url()</code></li>
         </ul>
     </div>
 
     {# Security Features section #}
     <div class="mb-8 p-6 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 dark:border-green-400 rounded-lg">
         <h3 class="text-lg font-bold text-green-700 dark:text-green-400 mb-2">Security Features</h3>
-        <p class="text-gray-700 dark:text-gray-300 mb-2">This demo showcases two-level permission control:</p>
+        <p class="text-gray-700 dark:text-gray-300 mb-2">This demo showcases three levels of permission control:</p>
         <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1 mb-4">
             <li><strong class="text-gray-900 dark:text-white">Global setting:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">required_role: null</code> disables bundle-wide authentication</li>
             <li><strong class="text-gray-900 dark:text-white">Entity-level:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">#[Admin(permissions: ['index' => 'ROLE_USER'])]</code> still enforced</li>
+            <li><strong class="text-gray-900 dark:text-white">Column-level:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">#[ColumnPermission('ROLE_ADMIN')]</code> hides columns per role (see User's lastLoginAt)</li>
             <li><strong class="text-gray-900 dark:text-white">Custom controller:</strong> Uses <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">AdminEntityVoter</code> to respect entity permissions</li>
         </ul>
         <details class="mt-4">

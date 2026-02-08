@@ -1,0 +1,16 @@
+{# Custom bicycle relation rendering with admin_entity_url() #}
+{% import kachnitel_admin_theme as css %}
+
+{% if value is null %}
+    <span class="{{ css.text_muted() }}">-</span>
+{% else %}
+    {% set url = admin_entity_url(value) %}
+    {% set label = value.brand ~ ' ' ~ value.model %}
+    {% if url %}
+        <a href="{{ url }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline">
+            {{ label }}
+        </a>
+    {% else %}
+        {{ label }}
+    {% endif %}
+{% endif %}

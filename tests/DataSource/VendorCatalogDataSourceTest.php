@@ -80,6 +80,26 @@ class VendorCatalogDataSourceTest extends TestCase
 
     public function testQueryWithCategoryFilter(): void
     {
+        $result = $this->dataSource->query('', ['category' => ['Drivetrain']], 'name', 'ASC', 1, 10);
+
+        $this->assertGreaterThan(0, $result->totalItems);
+        foreach ($result->items as $item) {
+            $this->assertSame('Drivetrain', $item->category);
+        }
+    }
+
+    public function testQueryWithMultiCategoryFilter(): void
+    {
+        $result = $this->dataSource->query('', ['category' => ['Drivetrain', 'Wheels']], 'name', 'ASC', 1, 20);
+
+        $this->assertGreaterThan(0, $result->totalItems);
+        foreach ($result->items as $item) {
+            $this->assertContains($item->category, ['Drivetrain', 'Wheels']);
+        }
+    }
+
+    public function testQueryWithSingleCategoryStringFilter(): void
+    {
         $result = $this->dataSource->query('', ['category' => 'Drivetrain'], 'name', 'ASC', 1, 10);
 
         $this->assertGreaterThan(0, $result->totalItems);

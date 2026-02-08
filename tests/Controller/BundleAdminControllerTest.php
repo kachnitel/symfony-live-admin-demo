@@ -181,15 +181,18 @@ class BundleAdminControllerTest extends WebTestCase
         );
     }
 
-    public function testHomepageShowsNewFeatures(): void
+    public function testHomepageShowsFeatures(): void
     {
         $client = $this->createAuthenticatedClient();
         $crawler = $client->request('GET', '/');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('body', 'New in v0.2.0');
+        $this->assertSelectorTextContains('body', 'Features Showcased');
+        $this->assertSelectorTextContains('body', 'Column Permissions');
+        $this->assertSelectorTextContains('body', 'Column Visibility Toggle');
+        $this->assertSelectorTextContains('body', 'Collection Filtering');
+        $this->assertSelectorTextContains('body', 'Entity URL Functions');
         $this->assertSelectorTextContains('body', 'DataSource Abstraction');
-        $this->assertSelectorTextContains('body', 'DateRangeFilter');
         $this->assertSelectorTextContains('body', 'Batch Actions');
     }
 }

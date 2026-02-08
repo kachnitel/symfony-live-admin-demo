@@ -83,7 +83,7 @@ class VendorCatalogDataSource implements DataSourceInterface
         return [
             'name' => FilterMetadata::text('name', 'Vendor Name', 'Search vendor...', 1),
             'country' => FilterMetadata::text('country', 'Country', 'Filter by country...', 2),
-            'category' => FilterMetadata::enum('category', self::CATEGORIES, 'Category', true, 3),
+            'category' => FilterMetadata::enum('category', self::CATEGORIES, 'Category', true, true, 3),
             'lastUpdated' => FilterMetadata::dateRange('lastUpdated', 'Updated Between', 4),
         ];
     }
@@ -152,10 +152,16 @@ class VendorCatalogDataSource implements DataSourceInterface
                     });
                 }
             } elseif ($column === 'category') {
-                // Exact match for enum filter
-                $items = array_filter($items, fn(array $item): bool =>
-                    $item[$column] === $value
-                );
+                // Multi-select enum filter: value may be array or string
+                if (is_array($value)) {
+                    $items = array_filter($items, fn(array $item): bool =>
+                        in_array($item[$column], $value, true)
+                    );
+                } else {
+                    $items = array_filter($items, fn(array $item): bool =>
+                        $item[$column] === $value
+                    );
+                }
             } else {
                 // Partial match for text filters
                 $items = array_filter($items, fn(array $item): bool =>

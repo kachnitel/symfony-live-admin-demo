@@ -16,6 +16,7 @@ use Kachnitel\AdminBundle\Attribute\ColumnFilter;
     label: 'Bike',
     icon: 'pedal_bike',
     enableBatchActions: true,
+    enableColumnVisibility: true,
     itemsPerPage: 5,
     sortBy: 'year',
     sortDirection: 'DESC'
@@ -47,6 +48,7 @@ class Bicycle
      * @var Collection<int, Part>
      */
     #[ORM\OneToMany(targetEntity: Part::class, mappedBy: 'bicycle', cascade: ['persist', 'remove'])]
+    #[ColumnFilter]
     private Collection $parts;
 
     public function __construct()

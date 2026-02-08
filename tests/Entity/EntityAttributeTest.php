@@ -8,6 +8,8 @@ use App\Entity\Bicycle;
 use App\Entity\Part;
 use App\Entity\User;
 use Kachnitel\AdminBundle\Attribute\Admin;
+use Kachnitel\AdminBundle\Attribute\ColumnFilter;
+use Kachnitel\AdminBundle\Attribute\ColumnPermission;
 use PHPUnit\Framework\TestCase;
 
 class EntityAttributeTest extends TestCase
@@ -21,6 +23,19 @@ class EntityAttributeTest extends TestCase
 
         $adminAttr = $attributes[0]->newInstance();
         $this->assertEquals('person', $adminAttr->getIcon());
+        $this->assertTrue($adminAttr->isEnableColumnVisibility());
+    }
+
+    public function testUserLastLoginAtHasColumnPermission(): void
+    {
+        $reflection = new \ReflectionClass(User::class);
+        $property = $reflection->getProperty('lastLoginAt');
+        $attributes = $property->getAttributes(ColumnPermission::class);
+
+        $this->assertNotEmpty($attributes, 'User lastLoginAt should have ColumnPermission attribute');
+
+        $permAttr = $attributes[0]->newInstance();
+        $this->assertEquals('ROLE_ADMIN', $permAttr->role);
     }
 
     public function testBicycleHasAdminAttribute(): void
@@ -33,6 +48,16 @@ class EntityAttributeTest extends TestCase
         $adminAttr = $attributes[0]->newInstance();
         $this->assertEquals('Bike', $adminAttr->getLabel());
         $this->assertEquals('pedal_bike', $adminAttr->getIcon());
+        $this->assertTrue($adminAttr->isEnableColumnVisibility());
+    }
+
+    public function testBicyclePartsHasColumnFilter(): void
+    {
+        $reflection = new \ReflectionClass(Bicycle::class);
+        $property = $reflection->getProperty('parts');
+        $attributes = $property->getAttributes(ColumnFilter::class);
+
+        $this->assertNotEmpty($attributes, 'Bicycle parts should have ColumnFilter attribute');
     }
 
     public function testPartHasAdminAttribute(): void
@@ -46,6 +71,7 @@ class EntityAttributeTest extends TestCase
         $adminAttr = $attributes[0]->newInstance();
         $this->assertEquals(null, $adminAttr->getLabel());
         $this->assertEquals('settings', $adminAttr->getIcon());
+        $this->assertTrue($adminAttr->isEnableColumnVisibility());
     }
 
     public function testUserEntityBasicFunctionality(): void

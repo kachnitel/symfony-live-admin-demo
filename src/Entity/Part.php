@@ -13,6 +13,7 @@ use Kachnitel\AdminBundle\Attribute\ColumnFilter;
 #[Admin(
     icon: 'settings',
     enableBatchActions: true,
+    enableColumnVisibility: true,
     itemsPerPage: 15,
     sortBy: 'name',
     sortDirection: 'ASC'

@@ -225,8 +225,8 @@ class User { ... }</code></pre>
                 <br><span class="text-sm text-gray-500 dark:text-gray-400 ml-5">&rarr; Click "Bundle Admin" in navigation to see it in action</span>
             </li>
             <li>
-                <strong class="text-gray-900 dark:text-white">Custom Controller</strong> - Use bundle components in your own controllers
-                <br><span class="text-sm text-gray-500 dark:text-gray-400 ml-5">&rarr; See examples below</span>
+                <strong class="text-gray-900 dark:text-white">Custom Controller</strong> - Use the EntityList component anywhere in your own templates
+                <br><span class="text-sm text-gray-500 dark:text-gray-400 ml-5">&rarr; See examples above</span>
             </li>
         </ol>
     </div>
@@ -253,8 +253,7 @@ class User { ... }</code></pre>
         <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm mb-4"><code class="text-gray-800 dark:text-gray-200">templates/bundles/KachnitelAdminBundle/types/
 ├── boolean/_preview.html.twig          # Custom boolean rendering
 ├── App/Entity/User/email.html.twig     # User-specific email field
-├── App/Entity/Part/bicycle.html.twig   # Clickable bike link (admin_entity_url)
-└── App/Entity/Bicycle/parts.html.twig  # Parts count link (admin_collection_url)</code></pre>
+└── App/Entity/Part/bicycle.html.twig   # Custom label & link render
         <p class="text-gray-700 dark:text-gray-300 mb-2">
             Active overrides in this demo:
         </p>
@@ -262,7 +261,6 @@ class User { ... }</code></pre>
             <li><strong class="text-gray-900 dark:text-white">Boolean fields</strong> - Colored badges (Yes / No)</li>
             <li><strong class="text-gray-900 dark:text-white">User email</strong> - Clickable mailto link</li>
             <li><strong class="text-gray-900 dark:text-white">Part's bicycle</strong> - Clickable link via <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-xs">admin_entity_url()</code></li>
-            <li><strong class="text-gray-900 dark:text-white">Bicycle's parts</strong> - Count with link via <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-xs">admin_collection_url()</code></li>
         </ul>
     </div>
 

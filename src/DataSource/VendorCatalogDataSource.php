@@ -152,10 +152,11 @@ class VendorCatalogDataSource implements DataSourceInterface
                     });
                 }
             } elseif ($column === 'category') {
-                // Multi-select enum filter: value may be array or string
-                if (is_array($value)) {
+                // Multi-select enum filter: value arrives as JSON string from EnumMultiFilter
+                $decoded = is_string($value) ? json_decode($value, true) : $value;
+                if (is_array($decoded)) {
                     $items = array_filter($items, fn(array $item): bool =>
-                        in_array($item[$column], $value, true)
+                        in_array($item[$column], $decoded, true)
                     );
                 } else {
                     $items = array_filter($items, fn(array $item): bool =>

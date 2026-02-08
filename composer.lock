@@ -1195,12 +1195,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kachnitel/FrdAdminBundle.git",
-                "reference": "c137f372759237d0fc2940077b5cba1dca522946"
+                "reference": "e9244cc5c72f931fb337900649df1f3bbe794c1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kachnitel/FrdAdminBundle/zipball/c137f372759237d0fc2940077b5cba1dca522946",
-                "reference": "c137f372759237d0fc2940077b5cba1dca522946",
+                "url": "https://api.github.com/repos/kachnitel/FrdAdminBundle/zipball/e9244cc5c72f931fb337900649df1f3bbe794c1b",
+                "reference": "e9244cc5c72f931fb337900649df1f3bbe794c1b",
                 "shasum": ""
             },
             "require": {
@@ -1271,9 +1271,9 @@
             ],
             "support": {
                 "issues": "https://github.com/kachnitel/FrdAdminBundle/issues",
-                "source": "https://github.com/kachnitel/FrdAdminBundle/tree/v0.5.1"
+                "source": "https://github.com/kachnitel/FrdAdminBundle/tree/master"
             },
-            "time": "2026-02-07T19:36:53+00:00"
+            "time": "2026-02-08T00:48:31+00:00"
         },
         {
             "name": "monolog/monolog",

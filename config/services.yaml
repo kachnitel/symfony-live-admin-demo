@@ -14,12 +14,13 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    # Ensure DataSourceInterface implementations are registered with the bundle
-    # The AutowireIterator in DataSourceRegistry looks for services tagged with the interface FQCN
+    # Register DataSourceInterface implementations with the bundle.
+    # The tag FQCN was moved to kachnitel/datasource-contracts in the 0.9 upgrade.
+    # See UPGRADE.md for the full migration guide.
     _instanceof:
-        Kachnitel\AdminBundle\DataSource\DataSourceInterface:
+        Kachnitel\DataSourceContracts\DataSourceInterface:
             tags:
-                - { name: 'Kachnitel\AdminBundle\DataSource\DataSourceInterface' }
+                - { name: 'Kachnitel\DataSourceContracts\DataSourceInterface' }
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

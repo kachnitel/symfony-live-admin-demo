@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/forms";
 
 /* Enable dark mode via class strategy (for three-way toggle) */
 @variant dark (&:where(.dark, .dark *));

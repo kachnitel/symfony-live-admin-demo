@@ -1,0 +1,39 @@
+{#
+ # Custom column: Account Age
+ # Shows how long ago a user account was created in a human-readable format.
+ # Variables: entity (User), value (always null for custom columns), property, cell
+ #}
+{% set now = "now"|date('U') %}
+{% set created = entity.createdAt|date('U') %}
+{% set diffSeconds = now - created %}
+{% set days = (diffSeconds / 86400)|round(0, 'floor') %}
+
+{% if days == 0 %}
+    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300"
+          title="Account created today">
+        New today
+    </span>
+{% elseif days < 7 %}
+    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300"
+          title="{{ entity.createdAt|date('Y-m-d') }}">
+        {{ days }}d
+    </span>
+{% elseif days < 30 %}
+    {% set weeks = (days / 7)|round(0, 'floor') %}
+    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
+          title="{{ entity.createdAt|date('Y-m-d') }}">
+        {{ weeks }}w
+    </span>
+{% elseif days < 365 %}
+    {% set months = (days / 30)|round(0, 'floor') %}
+    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300"
+          title="{{ entity.createdAt|date('Y-m-d') }}">
+        {{ months }}mo
+    </span>
+{% else %}
+    {% set years = (days / 365)|round(1) %}
+    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+          title="{{ entity.createdAt|date('Y-m-d') }}">
+        {{ years }}yr
+    </span>
+{% endif %}

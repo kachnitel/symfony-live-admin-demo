@@ -8,7 +8,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Kachnitel\AdminBundle\Attribute\Admin;
+use Kachnitel\AdminBundle\Attribute\AdminAction;
+use Kachnitel\AdminBundle\Attribute\AdminColumn;
+use Kachnitel\AdminBundle\Attribute\AdminColumnGroup;
 use Kachnitel\AdminBundle\Attribute\ColumnFilter;
+use Kachnitel\DataSourceContracts\ColumnGroup;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'bicycles')]
@@ -17,9 +22,23 @@ use Kachnitel\AdminBundle\Attribute\ColumnFilter;
     icon: 'pedal_bike',
     enableBatchActions: true,
     enableColumnVisibility: true,
+    enableInlineEdit: true,
     itemsPerPage: 5,
     sortBy: 'year',
-    sortDirection: 'DESC'
+    sortDirection: 'DESC',
+)]
+#[AdminColumnGroup(
+    id: 'bike',
+    subLabels: ColumnGroup::SUB_LABELS_HIDDEN,
+    header: ColumnGroup::HEADER_COLLAPSIBLE,
+)]
+#[AdminAction(
+    name: 'duplicate',
+    label: 'Duplicate',
+    icon: '📋',
+    route: 'app_bicycle_duplicate',
+    priority: 30,
+    confirmMessage: 'Duplicate this bicycle and all its parts?',
 )]
 class Bicycle
 {
@@ -29,19 +48,32 @@ class Bicycle
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 100)]
+    #[AdminColumn(group: 'bike')]
+    #[Assert\NotBlank(message: 'Brand must not be blank.')]
+    #[Assert\Length(max: 100)]
     private string $brand;
 
     #[ORM\Column(type: 'string', length: 100)]
+    #[AdminColumn(group: 'bike')]
+    #[Assert\NotBlank(message: 'Model must not be blank.')]
+    #[Assert\Length(max: 100)]
     private string $model;
 
     #[ORM\Column(type: 'string', length: 50)]
+    #[Assert\NotBlank(message: 'Color must not be blank.')]
     private string $color;
 
     #[ORM\Column(type: 'integer')]
+    #[Assert\Range(
+        min: 1900,
+        max: 2100,
+        notInRangeMessage: 'Year must be between {{ min }} and {{ max }}.',
+    )]
     private int $year;
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[ColumnFilter(type: 'daterange', label: 'Date Added', priority: 1)]
+    #[AdminColumn(editable: false)]
     private \DateTimeImmutable $createdAt;
 
     /**

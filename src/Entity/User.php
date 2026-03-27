@@ -7,8 +7,10 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Kachnitel\AdminBundle\Attribute\Admin;
+use Kachnitel\AdminBundle\Attribute\AdminCustomColumn;
 use Kachnitel\AdminBundle\Attribute\ColumnFilter;
 use Kachnitel\AdminBundle\Attribute\ColumnPermission;
+use Kachnitel\AdminBundle\Security\AdminEntityVoter;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -28,7 +30,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
     enableColumnVisibility: true,
     itemsPerPage: 10,
     sortBy: 'createdAt',
-    sortDirection: 'DESC'
+    sortDirection: 'DESC',
+    columns: ['id', 'email', 'name', 'active', 'accountAge', 'createdAt', 'lastLoginAt'],
+)]
+#[AdminCustomColumn(
+    name: 'accountAge',
+    template: 'admin/columns/user_account_age.html.twig',
+    label: 'Account Age',
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -58,7 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     #[ColumnFilter(type: 'daterange', priority: 2)]
-    #[ColumnPermission('ROLE_ADMIN')]
+    #[ColumnPermission([AdminEntityVoter::ADMIN_SHOW => 'ROLE_ADMIN'])]
     private ?\DateTimeImmutable $lastLoginAt = null;
 
     public function getId(): ?int

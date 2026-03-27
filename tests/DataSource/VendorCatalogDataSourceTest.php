@@ -5,8 +5,13 @@ declare(strict_types=1);
 namespace App\Tests\DataSource;
 
 use App\DataSource\VendorCatalogDataSource;
+use Kachnitel\DataSourceContracts\DataSourceInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(VendorCatalogDataSource::class)]
+#[Group('datasource')]
 class VendorCatalogDataSourceTest extends TestCase
 {
     private VendorCatalogDataSource $dataSource;
@@ -14,6 +19,11 @@ class VendorCatalogDataSourceTest extends TestCase
     protected function setUp(): void
     {
         $this->dataSource = new VendorCatalogDataSource();
+    }
+
+    public function testImplementsDataSourceInterface(): void
+    {
+        $this->assertInstanceOf(DataSourceInterface::class, $this->dataSource);
     }
 
     public function testGetIdentifier(): void
@@ -134,7 +144,6 @@ class VendorCatalogDataSourceTest extends TestCase
         $this->assertNotEmpty($resultAsc->items);
         $this->assertNotEmpty($resultDesc->items);
 
-        // First item in ASC should be different from first item in DESC (unless there's only one)
         if (count($resultAsc->items) > 1) {
             $this->assertNotSame($resultAsc->items[0]->name, $resultDesc->items[0]->name);
         }
@@ -151,7 +160,6 @@ class VendorCatalogDataSourceTest extends TestCase
 
         if ($page1->totalItems > 5) {
             $this->assertNotEmpty($page2->items);
-            // Ensure pages contain different items
             $this->assertNotSame($page1->items[0]->id, $page2->items[0]->id);
         }
     }

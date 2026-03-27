@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\DataSource;
 
-use Kachnitel\AdminBundle\DataSource\ColumnMetadata;
-use Kachnitel\AdminBundle\DataSource\DataSourceInterface;
-use Kachnitel\AdminBundle\DataSource\FilterMetadata;
-use Kachnitel\AdminBundle\DataSource\PaginatedResult;
+use Kachnitel\DataSourceContracts\ColumnMetadata;
+use Kachnitel\DataSourceContracts\DataSourceInterface;
+use Kachnitel\DataSourceContracts\FilterMetadata;
+use Kachnitel\DataSourceContracts\FlatColumnGroupsTrait;
+use Kachnitel\DataSourceContracts\PaginatedResult;
 
 /**
  * Custom DataSource demonstrating external data integration.
@@ -17,6 +18,8 @@ use Kachnitel\AdminBundle\DataSource\PaginatedResult;
  */
 class VendorCatalogDataSource implements DataSourceInterface
 {
+    use FlatColumnGroupsTrait;
+
     private const CATEGORIES = [
         'Drivetrain',
         'Wheels',

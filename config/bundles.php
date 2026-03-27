@@ -16,4 +16,6 @@ return [
     Symfony\UX\LiveComponent\LiveComponentBundle::class => ['all' => true],
     Kachnitel\AdminBundle\KachnitelAdminBundle::class => ['all' => true],
     Symfonycasts\TailwindBundle\SymfonycastsTailwindBundle::class => ['all' => true],
+    Symfony\UX\Autocomplete\AutocompleteBundle::class => ['all' => true],
+    Kachnitel\EntityComponentsBundle\KachnitelEntityComponentsBundle::class => ['all' => true],
 ];

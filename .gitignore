@@ -7,6 +7,7 @@
 /public/bundles/
 /var/
 /vendor/
+/node_modules/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
@@ -19,3 +20,7 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 /drivers/
+
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md

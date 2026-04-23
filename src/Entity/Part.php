@@ -6,9 +6,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Kachnitel\AdminBundle\Attribute\Admin;
-use Kachnitel\AdminBundle\Attribute\AdminColumn;
 use Kachnitel\AdminBundle\Attribute\ColumnFilter;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'parts')]
@@ -16,12 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     icon: 'settings',
     enableBatchActions: true,
     enableColumnVisibility: true,
-    enableInlineEdit: true,
     itemsPerPage: 15,
     sortBy: 'name',
     sortDirection: 'ASC',
-    archiveExpression: 'item.archived',
-    excludeColumns: ['archived'],
+    archiveExpression: 'item.archived'
 )]
 class Part
 {
@@ -32,8 +28,6 @@ class Part
 
     #[ORM\Column(type: 'string', length: 100)]
     #[ColumnFilter(placeholder: 'Part name...', priority: 1)]
-    #[Assert\NotBlank(message: 'Part name must not be blank.')]
-    #[Assert\Length(max: 100, maxMessage: 'Name cannot exceed {{ limit }} characters.')]
     private string $name;
 
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
@@ -42,7 +36,6 @@ class Part
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
     #[ColumnFilter(type: 'number', label: 'Min Price', operator: '>=', placeholder: 'Min price', priority: 3)]
-    #[Assert\PositiveOrZero(message: 'Price must be zero or positive.')]
     private ?string $price = null;
 
     #[ORM\ManyToOne(targetEntity: Bicycle::class, inversedBy: 'parts')]
@@ -52,7 +45,6 @@ class Part
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[ColumnFilter(type: 'daterange', priority: 10)]
-    #[AdminColumn(editable: false)]
     private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'boolean')]

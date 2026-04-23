@@ -91,15 +91,22 @@ class LoadDemoDataCommand extends Command
 
         $io->section('Loading demo data...');
 
+        // Create users
         $users = $this->createUsers($userCount);
         $io->text(sprintf('Created %d users', count($users)));
 
+        // Create bicycles with parts
         $bicycles = $this->createBicycles($bicycleCount);
         $io->text(sprintf('Created %d bicycles with attached parts', count($bicycles)));
 
+        // Create standalone parts (~20% will be archived to demonstrate archive feature)
         $standaloneParts = $this->createStandaloneParts($partCount);
-        $archivedCount = count(array_filter($standaloneParts, fn(Part $p): bool => $p->isArchived()));
-        $io->text(sprintf('Created %d standalone parts (%d archived/discontinued)', count($standaloneParts), $archivedCount));
+        $archivedCount = count(array_filter($standaloneParts, fn(Part $p) => $p->isArchived()));
+        $io->text(sprintf(
+            'Created %d standalone parts (%d archived)',
+            count($standaloneParts),
+            $archivedCount
+        ));
 
         $this->entityManager->flush();
 
@@ -115,7 +122,7 @@ class LoadDemoDataCommand extends Command
         );
 
         $io->note('Demo user: user@example.com / password');
-        $io->note('~20% of standalone parts are archived — use "Show archived" toggle in Part list to reveal them.');
+        $io->note('Archive feature: ~20% of standalone parts are archived. Use the "Show archived" toggle in the Parts list.');
 
         return Command::SUCCESS;
     }
@@ -124,13 +131,20 @@ class LoadDemoDataCommand extends Command
     {
         $connection = $this->entityManager->getConnection();
 
+        // Disable foreign key checks for SQLite
         $connection->executeStatement('PRAGMA foreign_keys = OFF');
+
+        // Delete in correct order to respect foreign keys
         $connection->executeStatement('DELETE FROM parts');
         $io->text('Purged parts table');
+
         $connection->executeStatement('DELETE FROM bicycles');
         $io->text('Purged bicycles table');
+
         $connection->executeStatement('DELETE FROM users');
         $io->text('Purged users table');
+
+        // Re-enable foreign key checks
         $connection->executeStatement('PRAGMA foreign_keys = ON');
     }
 
@@ -141,6 +155,7 @@ class LoadDemoDataCommand extends Command
     {
         $users = [];
 
+        // Always create the demo user first
         $demoUser = new User();
         $demoUser->setName('Demo User')
             ->setEmail('user@example.com')
@@ -153,12 +168,14 @@ class LoadDemoDataCommand extends Command
         $this->entityManager->persist($demoUser);
         $users[] = $demoUser;
 
+        // Create additional random users
         $usedEmails = ['user@example.com'];
         for ($i = 1; $i < $count; $i++) {
             $firstName = self::FIRST_NAMES[array_rand(self::FIRST_NAMES)];
             $lastName = self::LAST_NAMES[array_rand(self::LAST_NAMES)];
             $name = $firstName . ' ' . $lastName;
 
+            // Generate unique email
             $baseEmail = strtolower($firstName) . '.' . strtolower($lastName) . '@example.com';
             $email = $baseEmail;
             $counter = 1;
@@ -171,9 +188,10 @@ class LoadDemoDataCommand extends Command
             $user = new User();
             $user->setName($name)
                 ->setEmail($email)
-                ->setActive(random_int(0, 100) > 20)
+                ->setActive(random_int(0, 100) > 20) // 80% active
                 ->setCreatedAt($this->randomDate(365));
 
+            // 80% have logged in at some point
             if (random_int(0, 100) > 20) {
                 $user->setLastLoginAt($this->randomDate(30));
             }
@@ -208,12 +226,14 @@ class LoadDemoDataCommand extends Command
                 ->setYear(random_int(2020, 2026))
                 ->setCreatedAt($this->randomDate(365));
 
+            // Add 2-5 parts to each bicycle
             $partCount = random_int(2, 5);
             $usedTypes = [];
             for ($j = 0; $j < $partCount; $j++) {
                 $partTypes = array_keys(self::PART_TYPES);
                 $partType = $partTypes[array_rand($partTypes)];
 
+                // Avoid duplicate part types on same bike
                 if (in_array($partType, $usedTypes, true)) {
                     continue;
                 }
@@ -228,6 +248,7 @@ class LoadDemoDataCommand extends Command
                     ->setPrice((string) (random_int(50, 3000) + random_int(0, 99) / 100))
                     ->setCreatedAt($this->randomDate(365))
                     ->setBicycle($bicycle);
+                // Parts attached to bicycles are never archived
 
                 $this->entityManager->persist($part);
             }
@@ -240,7 +261,7 @@ class LoadDemoDataCommand extends Command
     }
 
     /**
-     * Creates standalone parts, archiving ~20% to demonstrate the archive/soft-delete feature.
+     * Creates standalone parts with ~20% archived to demo the archive feature.
      *
      * @return array<Part>
      */
@@ -260,8 +281,8 @@ class LoadDemoDataCommand extends Command
                 ->setPrice((string) (random_int(20, 500) + random_int(0, 99) / 100))
                 ->setCreatedAt($this->randomDate(365));
 
-            // Archive ~20% of standalone parts to showcase archive feature
-            if (random_int(1, 5) === 1) {
+            // Archive ~20% of standalone parts to demonstrate archive/soft-delete feature
+            if (random_int(1, 100) <= 20) {
                 $part->setArchived(true);
             }
 

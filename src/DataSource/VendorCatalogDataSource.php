@@ -7,7 +7,6 @@ namespace App\DataSource;
 use Kachnitel\DataSourceContracts\ColumnMetadata;
 use Kachnitel\DataSourceContracts\DataSourceInterface;
 use Kachnitel\DataSourceContracts\FilterMetadata;
-use Kachnitel\DataSourceContracts\FlatColumnGroupsTrait;
 use Kachnitel\DataSourceContracts\PaginatedResult;
 
 /**
@@ -18,8 +17,6 @@ use Kachnitel\DataSourceContracts\PaginatedResult;
  */
 class VendorCatalogDataSource implements DataSourceInterface
 {
-    use FlatColumnGroupsTrait;
-
     private const CATEGORIES = [
         'Drivetrain',
         'Wheels',
@@ -221,5 +218,10 @@ class VendorCatalogDataSource implements DataSourceInterface
     public function getItemValue(object $item, string $field): mixed
     {
         return $item->$field ?? null;
+    }
+
+    public function getColumnGroups(): array
+    {
+        return [];
     }
 }

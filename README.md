@@ -1,224 +1,214 @@
 # Admin Bundle Demo
 
-A minimal demonstration of the **kachnitel/admin-bundle** showcasing LiveComponents for entity management.
+A minimal demonstration of **kachnitel/admin-bundle** showcasing LiveComponents for entity management.
 
 ## Quick Start
 
 ```bash
-# Install dependencies
 composer install
-
-# Create database and load demo data
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate --no-interaction
 php bin/console app:load-demo-data
 php bin/console app:create-demo-user
-
-# Start server
 symfony server:start
 ```
 
 **Login:** `user@example.com` / `password`
 
-## Database
+## Bundle Version
 
-SQLite database located at `var/data.db` with sample data:
-- 3 Users (with active/inactive status)
-- 3 Bicycles (Trek, Specialized, Cannondale)
-- 14 Parts (wheels, frames, forks, grips, etc.)
+Tracks **dev-master** of `kachnitel/admin-bundle` (currently v0.9.x).
+
+| Package | Version | Notes |
+|---|---|---|
+| `kachnitel/admin-bundle` | `dev-master` | Core bundle |
+| `kachnitel/datasource-contracts` | `dev-master` | Extracted in v0.9 — `DataSourceInterface` etc. |
+| `symfony/ux-autocomplete` | `^2.32` | Required for relation filters |
+
+---
 
 ## Demo Features
 
-### 1. Two Implementation Approaches
-
-#### Custom Controller (`AdminController`)
-- **Route Pattern**: `/custom-admin/{entity}`
-- **Template**: Single generic template at `templates/admin/entity.html.twig`
-- **Reduces Duplication**: One template handles all entities via parameter
-- **Examples**:
-  - `/custom-admin/user`
-  - `/custom-admin/bicycle`
-  - `/custom-admin/part`
+### Two Implementation Approaches
 
 #### Bundle's GenericAdminController
-- **Route Pattern**: `/admin` (auto-discovery via `#[Admin]` attribute)
-- **Zero-Code**: No controller needed, entities auto-discovered
-- **Examples**:
-  - `/admin` - Dashboard listing all entities
-  - `/admin/user` - Auto-generated User management
-  - `/admin/bicycle` - Auto-generated Bicycle management
-  - `/admin/part` - Auto-generated Part management
+Auto-discovery via `#[Admin]` attribute — zero controller code needed.
+- `/admin` — Dashboard
+- `/admin/user`, `/admin/bicycle`, `/admin/part` — Auto-generated CRUD
 
-### 2. Entity Configuration
+#### Custom Controller (`AdminController`)
+Single generic template at `templates/admin/entity.html.twig` handles all entities via route parameter.
+- `/custom-admin/user`, `/custom-admin/bicycle`, `/custom-admin/part`
 
-All entities use the `#[Admin]` attribute for auto-discovery:
+### Entity Configuration
 
-**User.php**
 ```php
-#[Admin(label: 'Users', icon: 'person')]
+#[Admin(icon: 'person', enableColumnVisibility: true)]
+class User { }
+
+#[Admin(label: 'Bike', icon: 'pedal_bike', enableBatchActions: true)]
+class Bicycle { }
+
+// Archive / soft-delete (v0.9)
+#[Admin(icon: 'settings', enableBatchActions: true, archiveExpression: 'item.archived')]
+class Part {
+    private bool $archived = false;
+}
 ```
 
-**Bicycle.php**
-```php
-#[Admin(label: 'Bicycles', icon: 'pedal_bike')]
-```
+### Archive / Soft-Delete (v0.9)
 
-**Part.php** (with batch actions enabled)
-```php
-#[Admin(label: 'Parts', icon: 'settings', enableBatchActions: true)]
-```
+`Part` demonstrates the archive feature. The Parts list hides archived rows by default with a live toggle to reveal them. ~20% of standalone parts are seeded as archived by `app:load-demo-data`.
 
-### 3. Template Overrides
+### Template Overrides
 
-Custom rendering via template overrides in `templates/bundles/KachnitelAdminBundle/`:
+| Template | Effect |
+|---|---|
+| `types/boolean/_preview.html.twig` | Colored Yes/No badges for all boolean fields |
+| `types/App/Entity/User/email.html.twig` | Clickable mailto link |
+| `types/App/Entity/Part/bicycle.html.twig` | Linked relation via `admin_entity_url()` |
 
-#### Boolean Fields
-**Location**: `types/boolean/_preview.html.twig`
-- Renders as colored badges: ✓ Yes (green) / ✗ No (red)
-- Affects all boolean fields across all entities
+### Base Layout Integration
 
-#### User Email Field
-**Location**: `types/App/Entity/User/email.html.twig`
-- Entity-specific override for User.email
-- Renders as clickable mailto link with icon
-
-### 4. Base Layout Integration
-
-**Config**: `config/packages/kachnitel_admin.yaml`
 ```yaml
+# config/packages/kachnitel_admin.yaml
 kachnitel_admin:
     base_layout: 'base.html.twig'
-    required_role: null  # For demo purposes
+    required_role: null  # Demo: no global auth restriction
+    theme: 'theme/tailwind_dark.html.twig'
 ```
 
-The bundle integrates with the app's base layout using these blocks:
-- `{% block title %}` - Page title
-- `{% block headerTitle %}` - Page header
-- `{% block headerButtons %}` - Action buttons
-- `{% block content %}` - Main content
+The bundle integrates with your app's layout via blocks: `title`, `headerTitle`, `headerButtons`, `content`.
+
+---
 
 ## Installation Notes
 
-This demo shows the complete manual setup process. For new projects, many of these steps can be automated via Symfony Flex recipes.
+<details>
+<summary><strong>Manual setup (what was configured from scratch)</strong></summary>
 
-### What Was Configured Manually
-
-#### 1. Bundle Configuration (`config/packages/kachnitel_admin.yaml`)
+#### Bundle Config (`config/packages/kachnitel_admin.yaml`)
 ```yaml
 kachnitel_admin:
     base_layout: 'base.html.twig'
     required_role: null
 ```
 
-#### 2. Routes (imported via attribute-based routing)
-The bundle's routes are auto-discovered. For custom routes, see `src/Controller/AdminController.php`.
-
-#### 3. Security (`config/packages/security.yaml`)
+#### Security (`config/packages/security.yaml`)
 - User entity as provider
-- Form login with `/login` path
+- Form login at `/login`
 - Access control: `/admin` requires `ROLE_USER`
 
-#### 4. Stimulus Controller for Batch Actions
+#### Symlinked Development
+```json
+// composer.json
+{
+    "repositories": [{ "type": "path", "url": "../FrdAdminBundle" }],
+    "require": { "kachnitel/admin-bundle": "@dev" }
+}
+```
+After bundle changes: `php bin/console cache:clear`
 
-For batch operations (shift-click multi-select, batch delete), the bundle provides a Stimulus controller that needs to be registered:
+</details>
 
-**`assets/controllers.json`** - Add the bundle's controller:
+<details>
+<summary><strong>Batch Actions Stimulus setup</strong></summary>
+
+Batch actions require manually registering the bundle's Stimulus controller.
+
+**`assets/controllers.json`**:
 ```json
 {
     "controllers": {
         "@kachnitel/admin-bundle": {
-            "batch-select": {
-                "enabled": true,
-                "fetch": "eager",
-                "autoimport": {}
-            }
+            "batch-select": { "enabled": true, "fetch": "eager" }
         }
     }
 }
 ```
 
-**`importmap.php`** - Add the importmap entry:
+**`importmap.php`**:
 ```php
-return [
-    // ... other entries
-    '@kachnitel/admin-bundle/batch-select_controller.js' => [
-        'path' => '@kachnitel/admin-bundle/batch-select_controller.js',
-    ],
-];
+'@kachnitel/admin-bundle/batch-select_controller.js' => [
+    'path' => '@kachnitel/admin-bundle/controllers/batch-select_controller.js',
+],
 ```
 
-#### 5. Symlinked Development
-
-This demo uses a symlinked local version of the bundle for development:
-
-**`composer.json`**:
-```json
-{
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../FrdAdminBundle"
-        }
-    ],
-    "require": {
-        "kachnitel/admin-bundle": "@dev"
-    }
-}
+**`assets/stimulus_bootstrap.js`**:
+```js
+import BatchSelectController from '@kachnitel/admin-bundle/batch-select_controller.js';
+app.register('batch-select', BatchSelectController);
 ```
 
-After changes to the bundle, clear cache:
-```bash
-php bin/console cache:clear
+</details>
+
+---
+
+## Upgrade Notes
+
+<details>
+<summary><strong>v0.9 Breaking Changes</strong></summary>
+
+**1. `DataSourceInterface` namespace change**
+
+Contracts extracted to `kachnitel/datasource-contracts`:
+
+```diff
+- use Kachnitel\AdminBundle\DataSource\DataSourceInterface;
+- use Kachnitel\AdminBundle\DataSource\ColumnMetadata;
+- use Kachnitel\AdminBundle\DataSource\FilterMetadata;
+- use Kachnitel\AdminBundle\DataSource\PaginatedResult;
++ use Kachnitel\DataSourceContracts\DataSourceInterface;
++ use Kachnitel\DataSourceContracts\ColumnMetadata;
++ use Kachnitel\DataSourceContracts\FilterMetadata;
++ use Kachnitel\DataSourceContracts\PaginatedResult;
 ```
 
-## Running the Demo
+Also update `config/services.yaml`:
+```diff
+  _instanceof:
+-     Kachnitel\AdminBundle\DataSource\DataSourceInterface:
++     Kachnitel\DataSourceContracts\DataSourceInterface:
+          tags:
+-             - { name: 'Kachnitel\AdminBundle\DataSource\DataSourceInterface' }
++             - { name: 'Kachnitel\DataSourceContracts\DataSourceInterface' }
+```
 
-1. **Start Server**:
-   ```bash
-   symfony server:start
-   ```
+**2. PHP 8.4 required**
 
-2. **Visit**:
-   - Login: `http://localhost:8000/login`
-   - Bundle Admin: `http://localhost:8000/admin`
-   - Custom Admin: `http://localhost:8000/custom-admin/user`
+**3. New required packages** (pulled automatically via Composer)
+- `kachnitel/datasource-contracts`
+- `kachnitel/entity-expression-language`
+- `symfony/ux-autocomplete`
 
-3. **Load Demo Data**:
-   ```bash
-   php bin/console app:load-demo-data
-   ```
+</details>
+
+---
 
 ## Running Tests
 
-The demo includes comprehensive tests using Symfony's test framework and the LiveComponent test helpers.
-
 ```bash
-# Run all tests (excludes browser tests)
+# All tests (excludes browser tests)
 vendor/bin/phpunit
 
-# Run specific test suites
-vendor/bin/phpunit tests/Entity           # Unit tests for entities
-vendor/bin/phpunit tests/Controller       # Integration/functional tests
+# By feature group
+vendor/bin/phpunit --group archive
+vendor/bin/phpunit --group datasource-contracts
 
-# Run browser tests (requires geckodriver)
-vendor/bin/bdi detect drivers             # Install browser driver first
-vendor/bin/phpunit -c phpunit-browser.xml # Run browser tests
-```
+# By directory
+vendor/bin/phpunit tests/Entity
+vendor/bin/phpunit tests/DataSource
+vendor/bin/phpunit tests/Controller
 
-### Browser Tests
-
-Browser tests use Symfony Panther to test JavaScript functionality (batch-select controller).
-They are excluded from regular test runs due to their slower execution time.
-
-**Setup:**
-```bash
-composer require --dev symfony/panther dbrekelmans/bdi
+# Browser tests (requires geckodriver)
 vendor/bin/bdi detect drivers
+vendor/bin/phpunit -c phpunit-browser.xml
 ```
 
-### Test Setup
+<details>
+<summary><strong>Test setup pattern</strong></summary>
 
-Tests use `setUpBeforeClass`/`tearDownAfterClass` for database lifecycle:
+Tests use `setUpBeforeClass` / `tearDownAfterClass` for database lifecycle:
 
 ```php
 public static function setUpBeforeClass(): void
@@ -230,7 +220,6 @@ public static function setUpBeforeClass(): void
     $schemaTool = new SchemaTool($entityManager);
     $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
 
-    // Drop and recreate for clean state
     $schemaTool->dropSchema($metadata);
     $schemaTool->createSchema($metadata);
 
@@ -238,80 +227,59 @@ public static function setUpBeforeClass(): void
 }
 ```
 
-### Test Coverage
+LiveComponent tests use `InteractsWithLiveComponents` trait with real entity-based authentication (not `InMemoryUser`).
 
-**Entity Tests** (7 tests, 25 assertions) - ALL PASSING
-- Verifies `#[Admin]` attributes on all entities
-- Tests entity getters/setters
-- Tests bicycle-part relationships
+</details>
 
-**LiveComponent Tests** - Uses `InteractsWithLiveComponents` trait
-- Tests EntityList component rendering
-- Uses real `User` entity for authentication (not `InMemoryUser`)
-
-**Functional Tests** - Tests bundle routes with authentication
-- Creates authenticated client with `loginUser()`
-- Tests dashboard, entity pages, and 404 handling
+---
 
 ## File Structure
 
 ```
 src/
 ├── Controller/
-│   ├── AdminController.php          # Custom controller with generic route
-│   └── SecurityController.php       # Login/logout handling
+│   ├── AdminController.php               # Custom controller (generic route)
+│   └── SecurityController.php
+├── DataSource/
+│   └── VendorCatalogDataSource.php       # Uses kachnitel/datasource-contracts
 ├── Entity/
-│   ├── User.php                     # #[Admin] attribute
-│   ├── Bicycle.php                  # #[Admin] attribute
-│   └── Part.php                     # #[Admin(enableBatchActions: true)]
+│   ├── User.php
+│   ├── Bicycle.php
+│   └── Part.php                          # archived field + archiveExpression
 └── Command/
-    ├── LoadDemoDataCommand.php      # Sample data loader
-    └── CreateDemoUserCommand.php    # Demo user creator
+    ├── LoadDemoDataCommand.php           # Seeds ~20% of parts as archived
+    └── CreateDemoUserCommand.php
 
-assets/
-├── app.js                           # Main JS entrypoint
-├── controllers.json                 # Stimulus controller registry
-└── stimulus_bootstrap.js            # Stimulus initialization
+migrations/
+├── Version20251205231658.php             # Initial schema
+├── Version20251210174711.php             # Add password to users
+├── Version20260110120000.php             # Add datetime fields
+└── Version20260422000000.php             # Add archived to parts (v0.9)
 
 templates/
-├── base.html.twig                   # App base layout
+├── base.html.twig
 ├── admin/
-│   ├── index.html.twig              # Home dashboard
-│   └── entity.html.twig             # Generic entity template
-├── security/
-│   └── login.html.twig              # Login form
-└── bundles/
-    └── KachnitelAdminBundle/
-        └── types/
-            ├── boolean/_preview.html.twig              # Boolean override
-            └── App/Entity/User/email.html.twig         # User email override
+│   ├── index.html.twig                   # Homepage with feature cards
+│   └── entity.html.twig                  # Generic entity template
+├── security/login.html.twig
+└── bundles/KachnitelAdminBundle/types/
+    ├── boolean/_preview.html.twig
+    ├── App/Entity/User/email.html.twig
+    └── App/Entity/Part/bicycle.html.twig
 
 config/
-├── packages/
-│   ├── kachnitel_admin.yaml         # Bundle configuration
-│   └── security.yaml                # Security configuration
-└── routes/
-    └── security.yaml                # Login/logout routes
+├── packages/kachnitel_admin.yaml
+├── services.yaml                         # datasource-contracts namespace
+└── ...
 
 tests/
-├── Entity/                          # Unit tests
-│   └── EntityAttributeTest.php      # Admin attribute tests
-├── Controller/                      # Functional tests
-│   ├── AdminControllerTest.php      # LiveComponent tests
-│   ├── BundleAdminControllerTest.php # Bundle route tests
-│   └── SecurityControllerTest.php   # Auth tests
-└── Browser/                         # Browser tests (Panther)
-    └── BatchSelectControllerTest.php # JS functionality tests
+├── Entity/
+│   ├── EntityAttributeTest.php           # #[Admin] attribute + getter/setter tests
+│   └── PartArchiveTest.php               # Archive feature tests
+├── DataSource/
+│   └── VendorCatalogDataSourceTest.php
+└── Controller/
+    ├── AdminControllerTest.php           # LiveComponent tests
+    ├── BundleAdminControllerTest.php     # Bundle routes + archive toggle
+    └── SecurityControllerTest.php
 ```
-
-## Key Concepts Demonstrated
-
-1. **Reduced Duplication**: Single generic template vs separate templates per entity
-2. **Auto-Discovery**: Entities with `#[Admin]` attribute automatically available
-3. **Template Hierarchy**: Global type overrides vs entity-specific overrides
-4. **Base Layout Integration**: Bundle extends your app's layout
-5. **Zero-Code Admin**: GenericAdminController requires no custom code
-6. **Custom Routes**: Mix bundle routes with your own controller when needed
-7. **Batch Operations**: Multi-select with Shift+Click and bulk delete
-8. **Security Integration**: Form login with entity-based user provider
-9. **Testing Patterns**: LiveComponent testing with real entities

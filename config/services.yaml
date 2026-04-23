@@ -14,9 +14,8 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    # Register DataSourceInterface implementations with the bundle.
-    # The tag FQCN was moved to kachnitel/datasource-contracts in the 0.9 upgrade.
-    # See UPGRADE.md for the full migration guide.
+    # Ensure DataSourceInterface implementations are registered with the bundle.
+    # As of kachnitel/admin-bundle v0.9, contracts live in kachnitel/datasource-contracts.
     _instanceof:
         Kachnitel\DataSourceContracts\DataSourceInterface:
             tags:

@@ -6,12 +6,8 @@ namespace App\Tests\DataSource;
 
 use App\DataSource\VendorCatalogDataSource;
 use Kachnitel\DataSourceContracts\DataSourceInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(VendorCatalogDataSource::class)]
-#[Group('datasource')]
 class VendorCatalogDataSourceTest extends TestCase
 {
     private VendorCatalogDataSource $dataSource;
@@ -21,8 +17,9 @@ class VendorCatalogDataSourceTest extends TestCase
         $this->dataSource = new VendorCatalogDataSource();
     }
 
-    public function testImplementsDataSourceInterface(): void
+    public function testImplementsContractsInterface(): void
     {
+        // Since v0.9, contracts live in kachnitel/datasource-contracts
         $this->assertInstanceOf(DataSourceInterface::class, $this->dataSource);
     }
 

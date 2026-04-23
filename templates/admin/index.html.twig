@@ -34,8 +34,26 @@
         <h2 class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">About Kachnitel\AdminBundle</h2>
         <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
             A Symfony bundle for rapid admin interface development using <strong class="text-gray-900 dark:text-white">LiveComponents</strong>.
-            Build fully functional CRUD interfaces with just PHP attributes — no boilerplate code required.
+            Build fully functional CRUD interfaces with just PHP attributes - no boilerplate code required.
         </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+            <div class="text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">Zero Boilerplate</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Just add <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">#[Admin]</code> to your entities</span>
+            </div>
+            <div class="text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">Built-in Security</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Per-action permission control via attributes</span>
+            </div>
+            <div class="text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">Customizable</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Override templates, use custom forms</span>
+            </div>
+            <div class="text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">LiveComponents</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Real-time filtering and interactions</span>
+            </div>
+        </div>
     </div>
 
     {# Custom Controller Examples #}
@@ -60,7 +78,9 @@
                         {% endif %}
                     </p>
                 {% else %}
-                    <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">No permission required (public)</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">
+                        No permission required (public)
+                    </p>
                 {% endif %}
                 <a href="{{ path(entity.route, {entity: entity.name|lower}) }}"
                    class="inline-block mt-4 px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-400 transition-colors text-sm">
@@ -73,113 +93,20 @@
     {# Features Showcased #}
     <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Features Showcased</h2>
     <p class="text-gray-600 dark:text-gray-400 mb-6">
-        This demo exercises the bundle's key features. Click through to the Bundle Admin to see them live.
+        This demo exercises the bundle's key features:
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-
-        {# --- Inline Edit (NEW 0.6+) --- #}
-        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50 border-l-4 border-green-500 dark:border-green-400">
-            <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-semibold uppercase tracking-wide text-green-600 dark:text-green-400">New in 0.6</span>
-            </div>
-            <strong class="text-gray-900 dark:text-white">Inline Edit</strong>
-            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
-                Edit field values directly in the list view — no separate edit page needed.
-                Validates on save using Symfony constraints.
-            </p>
-            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">enableInlineEdit: true</code>
-            <br>
-            <a href="{{ path('app_admin_entity_index', {entitySlug: 'bicycle'}) }}"
-               class="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-1 inline-block">
-                See Bicycle list (brand/model/color/year editable) &rarr;
-            </a>
-        </div>
-
-        {# --- Row Actions (NEW 0.7+) --- #}
-        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50 border-l-4 border-green-500 dark:border-green-400">
-            <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-semibold uppercase tracking-wide text-green-600 dark:text-green-400">New in 0.7</span>
-            </div>
-            <strong class="text-gray-900 dark:text-white">Row Actions</strong>
-            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
-                Add custom per-row buttons with conditions, confirmation dialogs,
-                and custom routes. Appear on list rows, show, and edit pages.
-            </p>
-            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[AdminAction(name: 'duplicate', ...)]</code>
-            <br>
-            <a href="{{ path('app_admin_entity_index', {entitySlug: 'bicycle'}) }}"
-               class="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-1 inline-block">
-                See Bicycle list (📋 Duplicate button) &rarr;
-            </a>
-        </div>
-
-        {# --- Composite Columns (NEW 0.8+) --- #}
-        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50 border-l-4 border-green-500 dark:border-green-400">
-            <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-semibold uppercase tracking-wide text-green-600 dark:text-green-400">New in 0.8</span>
-            </div>
-            <strong class="text-gray-900 dark:text-white">Composite Columns</strong>
-            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
-                Group related properties into a single stacked table cell.
-                Supports collapsible headers for per-sub-column sort/filter.
-            </p>
-            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[AdminColumn(group: 'bike')]</code>
-            <br>
-            <a href="{{ path('app_admin_entity_index', {entitySlug: 'bicycle'}) }}"
-               class="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-1 inline-block">
-                See Bicycle list (Brand+Model in one cell) &rarr;
-            </a>
-        </div>
-
-        {# --- Archive (NEW 0.8+) --- #}
-        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50 border-l-4 border-green-500 dark:border-green-400">
-            <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-semibold uppercase tracking-wide text-green-600 dark:text-green-400">New in 0.8</span>
-            </div>
-            <strong class="text-gray-900 dark:text-white">Archive / Soft-Delete</strong>
-            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
-                Show/hide archived rows with a toggle — no Doctrine filter needed.
-                Archive and Unarchive buttons appear automatically.
-            </p>
-            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">archiveExpression: 'item.archived'</code>
-            <br>
-            <a href="{{ path('app_admin_entity_index', {entitySlug: 'part'}) }}"
-               class="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-1 inline-block">
-                See Part list (toggle "Show archived") &rarr;
-            </a>
-        </div>
-
-        {# --- Custom Columns (NEW 0.7+) --- #}
-        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50 border-l-4 border-green-500 dark:border-green-400">
-            <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-semibold uppercase tracking-wide text-green-600 dark:text-green-400">New in 0.7</span>
-            </div>
-            <strong class="text-gray-900 dark:text-white">Custom Columns</strong>
-            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
-                Add virtual, template-driven columns not backed by a Doctrine field.
-                Perfect for computed values, badges, or enriched displays.
-            </p>
-            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[AdminCustomColumn(name: 'accountAge', ...)]</code>
-            <br>
-            <a href="{{ path('app_admin_entity_index', {entitySlug: 'user'}) }}"
-               class="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-1 inline-block">
-                See User list ("Account Age" column) &rarr;
-            </a>
-        </div>
-
-        {# --- Column Permissions (0.5) --- #}
         <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
             <strong class="text-gray-900 dark:text-white">Column Permissions</strong>
             <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
                 Role-based column visibility using Symfony's security voter
             </p>
-            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[ColumnPermission([AdminEntityVoter::ADMIN_SHOW => 'ROLE_ADMIN'])]</code>
+            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[ColumnPermission('ROLE_ADMIN')]</code>
             <br>
             <span class="text-sm text-gray-500 dark:text-gray-500">User's lastLoginAt hidden for ROLE_USER</span>
         </div>
 
-        {# --- Column Visibility (0.5) --- #}
         <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
             <strong class="text-gray-900 dark:text-white">Column Visibility Toggle</strong>
             <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
@@ -190,7 +117,6 @@
             <span class="text-sm text-gray-500 dark:text-gray-500">Enabled on all entities</span>
         </div>
 
-        {# --- Collection Filtering --- #}
         <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
             <strong class="text-gray-900 dark:text-white">Collection Filtering</strong>
             <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
@@ -201,7 +127,16 @@
             <span class="text-sm text-gray-500 dark:text-gray-500">See Bicycle's parts filter</span>
         </div>
 
-        {# --- Multi-Select Enum Filter --- #}
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+            <strong class="text-gray-900 dark:text-white">Entity URL Functions</strong>
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
+                Generate admin panel URLs for related entities in Twig
+            </p>
+            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">admin_entity_url() / admin_collection_url()</code>
+            <br>
+            <span class="text-sm text-gray-500 dark:text-gray-500">See Part's bike link, Bicycle's parts count</span>
+        </div>
+
         <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
             <strong class="text-gray-900 dark:text-white">Multi-Select Enum Filter</strong>
             <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
@@ -211,11 +146,10 @@
             <br>
             <a href="{{ path('app_admin_datasource_index', {dataSourceId: 'vendor-catalog'}) }}"
                class="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-1 inline-block">
-                See Vendor Catalog's category filter &rarr;
+                See Vendor Catalog's category &rarr;
             </a>
         </div>
 
-        {# --- DataSource Abstraction --- #}
         <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
             <strong class="text-gray-900 dark:text-white">DataSource Abstraction</strong>
             <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
@@ -229,10 +163,19 @@
             </a>
         </div>
 
-        {# --- Batch Actions --- #}
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+            <strong class="text-gray-900 dark:text-white">Advanced Filters</strong>
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
+                Date ranges, boolean, number operators, relation search
+            </p>
+            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">#[ColumnFilter(type: 'daterange')]</code>
+            <br>
+            <span class="text-sm text-gray-500 dark:text-gray-500">See Part's price (>=) and User's createdAt</span>
+        </div>
+
         <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
             <strong class="text-gray-900 dark:text-white">Batch Actions</strong>
-            <p class="text-sm text-gray-600 dark:text-gray:text-gray-400 my-2">
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
                 Multi-select with Shift/Ctrl+Click, bulk delete
             </p>
             <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">enableBatchActions: true</code>
@@ -240,17 +183,31 @@
             <span class="text-sm text-gray-500 dark:text-gray-500">Enabled on all entities</span>
         </div>
 
-        {# --- Entity URL Functions --- #}
-        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
-            <strong class="text-gray-900 dark:text-white">Entity URL Functions</strong>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50 border border-green-200 dark:border-green-800">
+            <div class="flex items-center gap-2 mb-1">
+                <strong class="text-gray-900 dark:text-white">Archive / Soft-Delete</strong>
+                <span class="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded">v0.9</span>
+            </div>
             <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
-                Generate admin panel URLs for related entities in Twig
+                Hide archived rows by default with a live toggle. Works with boolean flags and nullable-datetime fields.
             </p>
-            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">admin_entity_url() / admin_collection_url()</code>
+            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">archiveExpression: 'item.archived'</code>
             <br>
-            <span class="text-sm text-gray-500 dark:text-gray-500">See Part's bike link, Bicycle's parts count</span>
+            <a href="{{ path('app_admin_entity_index', {entitySlug: 'part'}) }}"
+               class="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-1 inline-block">
+                See Parts list (archive toggle) &rarr;
+            </a>
         </div>
 
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow dark:shadow-gray-900/50">
+            <strong class="text-gray-900 dark:text-white">Bundle Dashboard</strong>
+            <p class="text-sm text-gray-600 dark:text-gray-400 my-2">
+                Built-in dashboard with entity and data source cards
+            </p>
+            <a href="{{ path('app_admin_dashboard') }}" class="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                View Dashboard &rarr;
+            </a>
+        </div>
     </div>
 
     {# Quick Start section #}
@@ -260,38 +217,124 @@
         <pre class="bg-white dark:bg-gray-800 p-4 rounded-lg overflow-x-auto text-sm"><code class="text-gray-800 dark:text-gray-200">use Kachnitel\AdminBundle\Attribute\Admin;
 
 #[Admin(
-    icon: 'pedal_bike',
-    enableInlineEdit: true,
-    archiveExpression: 'item.archived',
-    permissions: ['index' => 'ROLE_USER'],
+    icon: 'person',
+    permissions: [
+        'index' => 'ROLE_USER',
+        'edit' => 'ROLE_ADMIN',
+    ]
 )]
-class Bicycle { ... }</code></pre>
+class User { ... }</code></pre>
         <p class="mt-3">
-            <a href="https://github.com/kachnitel/FrdAdminBundle#readme" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">
+            <a href="https://github.com/kachnitel/FrdAdminBundle#usage" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">
                 View full documentation &rarr;
             </a>
         </p>
     </div>
 
+    {# Two approaches section #}
+    <div class="mb-8 p-6 bg-cyan-50 dark:bg-cyan-900/20 border-l-4 border-cyan-600 dark:border-cyan-400 rounded-lg">
+        <h3 class="text-lg font-bold text-cyan-700 dark:text-cyan-400 mb-2">Two Implementation Approaches</h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-2">This demo showcases two ways to use the bundle:</p>
+        <ol class="list-decimal list-inside text-gray-700 dark:text-gray-300 space-y-2">
+            <li>
+                <strong class="text-gray-900 dark:text-white">GenericAdminController</strong> - Zero-code admin using the bundle's built-in routes
+                <br><span class="text-sm text-gray-500 dark:text-gray-400 ml-5">&rarr; Click "Bundle Admin" in navigation to see it in action</span>
+            </li>
+            <li>
+                <strong class="text-gray-900 dark:text-white">Custom Controller</strong> - Use the EntityList component anywhere in your own templates
+                <br><span class="text-sm text-gray-500 dark:text-gray-400 ml-5">&rarr; See examples above</span>
+            </li>
+        </ol>
+    </div>
+
+    {# Core Components section #}
+    <div class="mb-8 p-6 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 dark:border-blue-400 rounded-lg">
+        <h3 class="text-lg font-bold text-blue-700 dark:text-blue-400 mb-2">Core Components</h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">The bundle provides reusable Symfony UX components:</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">EntityList Component</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">
+                    Live-searchable entity lists with filtering
+                    <br><a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/src/Twig/Components/EntityList.php" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">View code &rarr;</a>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    {# Template Override System section #}
+    <div class="mb-8 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow dark:shadow-gray-900/50">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">Template Override System</h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-3">Customize how any property is rendered by placing templates in your app:</p>
+        <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm mb-4"><code class="text-gray-800 dark:text-gray-200">templates/bundles/KachnitelAdminBundle/types/
+├── boolean/_preview.html.twig          # Custom boolean rendering
+├── App/Entity/User/email.html.twig     # User-specific email field
+└── App/Entity/Part/bicycle.html.twig   # Custom label & link render</code></pre>
+        <p class="text-gray-700 dark:text-gray-300 mb-2">
+            Active overrides in this demo:
+        </p>
+        <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1">
+            <li><strong class="text-gray-900 dark:text-white">Boolean fields</strong> - Colored badges (Yes / No)</li>
+            <li><strong class="text-gray-900 dark:text-white">User email</strong> - Clickable mailto link</li>
+            <li><strong class="text-gray-900 dark:text-white">Part's bicycle</strong> - Clickable link via <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-xs">admin_entity_url()</code></li>
+        </ul>
+    </div>
+
     {# Security Features section #}
     <div class="mb-8 p-6 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 dark:border-green-400 rounded-lg">
         <h3 class="text-lg font-bold text-green-700 dark:text-green-400 mb-2">Security Features</h3>
-        <p class="text-gray-700 dark:text-gray-300 mb-2">Three levels of permission control:</p>
+        <p class="text-gray-700 dark:text-gray-300 mb-2">This demo showcases three levels of permission control:</p>
         <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1 mb-4">
             <li><strong class="text-gray-900 dark:text-white">Global setting:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">required_role: null</code> disables bundle-wide authentication</li>
             <li><strong class="text-gray-900 dark:text-white">Entity-level:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">#[Admin(permissions: ['index' => 'ROLE_USER'])]</code> still enforced</li>
-            <li><strong class="text-gray-900 dark:text-white">Column-level:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">#[ColumnPermission([AdminEntityVoter::ADMIN_SHOW => 'ROLE_ADMIN'])]</code> hides columns per role</li>
+            <li><strong class="text-gray-900 dark:text-white">Column-level:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">#[ColumnPermission('ROLE_ADMIN')]</code> hides columns per role (see User's lastLoginAt)</li>
             <li><strong class="text-gray-900 dark:text-white">Custom controller:</strong> Uses <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">AdminEntityVoter</code> to respect entity permissions</li>
         </ul>
         {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-            <p class="p-4 bg-white dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300">
+            <p class="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300">
                 <strong class="text-gray-900 dark:text-white">Try it:</strong> Login with <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">user@example.com</code> / <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">password</code> to access User entity
             </p>
         {% else %}
-            <p class="p-4 bg-white dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300">
-                <strong class="text-gray-900 dark:text-white">Logged in</strong> — you can access User entity (requires <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">ROLE_USER</code>).
-                Note: <em>lastLoginAt</em> column is hidden — it requires <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">ROLE_ADMIN</code>.
+            <p class="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300">
+                <strong class="text-gray-900 dark:text-white">Logged in</strong> - You can now access User entity (requires <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">ROLE_USER</code>)
             </p>
         {% endif %}
+    </div>
+
+    {# Documentation & Resources section #}
+    <div class="mb-8 p-6 bg-gray-100 dark:bg-gray-800 rounded-lg">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Documentation & Resources</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a href="https://github.com/kachnitel/FrdAdminBundle" target="_blank"
+               class="block p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow">
+                <strong class="text-blue-600 dark:text-blue-400">GitHub Repository</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Source code, issues, and PRs</span>
+            </a>
+            <a href="https://github.com/kachnitel/FrdAdminBundle#readme" target="_blank"
+               class="block p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow">
+                <strong class="text-blue-600 dark:text-blue-400">README</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Installation and quick start</span>
+            </a>
+            <a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/CHANGELOG.md" target="_blank"
+               class="block p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow">
+                <strong class="text-blue-600 dark:text-blue-400">Changelog</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Version history and updates</span>
+            </a>
+            <a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/docs/CONFIGURATION.md" target="_blank"
+               class="block p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow">
+                <strong class="text-blue-600 dark:text-blue-400">Configuration</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Bundle configuration options</span>
+            </a>
+            <a href="https://github.com/kachnitel/FrdAdminBundle/blob/master/docs/ARCHIVE.md" target="_blank"
+               class="block p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow">
+                <strong class="text-blue-600 dark:text-blue-400">Archive Guide</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Soft-delete / archive filtering docs</span>
+            </a>
+            <a href="https://symfony.com/bundles/ux-live-component/current/index.html" target="_blank"
+               class="block p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow">
+                <strong class="text-blue-600 dark:text-blue-400">UX LiveComponent Docs</strong><br>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Learn about LiveComponents</span>
+            </a>
+        </div>
     </div>
 {% endblock %}

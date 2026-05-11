@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Kachnitel\AdminBundle\Attribute\Admin;
+use Kachnitel\AdminBundle\Attribute\AdminAction;
 use Kachnitel\AdminBundle\Attribute\ColumnFilter;
 
 #[ORM\Entity]
@@ -18,6 +19,23 @@ use Kachnitel\AdminBundle\Attribute\ColumnFilter;
     sortBy: 'name',
     sortDirection: 'ASC',
     archiveExpression: 'item.archived'
+)]
+#[AdminAction(
+    name: 'batch-detach-bike',
+    label: 'Detach from Bike',
+    icon: '🔗',
+    route: 'app_part_batch_detach',
+    confirmMessage: 'Detach %count% part(s) from their bicycle?',
+    priority: 40,
+    actionType: AdminAction::ACTION_TYPE_BATCH,
+)]
+#[AdminAction(
+    name: 'batch-assign-bike',
+    label: 'Assign to Bike',
+    icon: '🚲',
+    liveComponent: 'App:Batch:AssignToBike',
+    priority: 50,
+    actionType: AdminAction::ACTION_TYPE_BATCH,
 )]
 class Part
 {

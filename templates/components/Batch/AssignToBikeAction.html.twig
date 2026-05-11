@@ -1,0 +1,48 @@
+{#
+ # Batch action LiveComponent: Assign selected Parts to a Bicycle.
+ #
+ # Rendered in the batch actions bar (inside the EntityList batch bar).
+ # Shows an empty-state when nothing is selected, otherwise renders a
+ # bicycle dropdown + "Assign" button.
+ #
+ # Variables (from BatchActionTrait LiveProps):
+ #   selectedIds      — array of currently selected part IDs
+ #   entityClass      — 'App\Entity\Part'
+ #   entityShortClass — 'Part'
+ #   bicycleId        — currently selected bicycle ID (writable LiveProp)
+ #   this.bicycles    — list of Bicycle entities for the dropdown
+ #}
+{% import kachnitel_admin_theme as css %}
+
+<div {{ attributes }} class="flex items-center gap-2 flex-wrap">
+    {% if selectedIds|length == 0 %}
+        <span class="text-sm {{ css.text_muted() }} italic">
+            🚲 Select parts to assign to a bike
+        </span>
+    {% else %}
+        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            🚲 Assign {{ selectedIds|length }} part(s) to:
+        </span>
+
+        <select
+            data-model="bicycleId"
+            class="block rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 dark:focus:border-blue-400 text-sm py-1 px-2 min-w-[180px]">
+            <option value="">Select a bicycle…</option>
+            {% for bicycle in this.bicycles %}
+                <option value="{{ bicycle.id }}"
+                        {% if bicycleId is not null and bicycleId == bicycle.id %}selected{% endif %}>
+                    {{ bicycle.brand }} {{ bicycle.model }} ({{ bicycle.year }})
+                </option>
+            {% endfor %}
+        </select>
+
+        <button
+            type="button"
+            data-action="live#action"
+            data-live-action-param="execute"
+            {% if bicycleId is null or bicycleId == '' %}disabled{% endif %}
+            class="{{ css.btn_primary() }} {{ css.btn_sm() }} disabled:opacity-50 disabled:cursor-not-allowed">
+            Assign
+        </button>
+    {% endif %}
+</div>
